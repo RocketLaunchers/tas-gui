@@ -1,0 +1,129 @@
+use tauri::{
+    plugin::{Builder, TauriPlugin},
+    AppHandle, Manager, Runtime, State,
+};
+use std::time::Duration;
+
+use serde::Serialize;
+use serialport::{self, SerialPort};
+use std::{
+    collections::HashMap,
+    sync::{mpsc::Sender, Arc, Mutex},
+};
+
+#[derive(Default)]
+pub struct SerialportState {
+    // plugin state, configuration fields
+    pub serialports: Arc<Mutex<HashMap<String, SerialportInfo>>>,
+}
+pub struct SerialportInfo {
+    pub serialport: Box<dyn SerialPort>,
+    pub sender: Option<Sender<usize>>,
+}
+
+#[derive(Serialize, Clone)]
+pub struct InvokeResult {
+    pub code: i32,
+    pub message: String,
+}
+
+#[derive(Serialize, Clone)]
+pub struct ReadData<'a> {
+    pub data: &'a [u8],
+    pub size: usize,
+}
+
+#[tauri::command]
+fn open<R: Runtime>(port_name: String, baud_rate: u32,_app: AppHandle<R>, state: State<'_, MyState>) -> String {
+    let port = serialport::new(port_name, baud_rate)
+        .timeout(Duration::from_millis(10))
+        .open();
+
+    match port {
+        Ok(mut port) => {
+            return format!("port is open {:?}!", port.name());
+        }
+        Err(e) => {
+            return format!("Failed to open \"{}\". Error: {}", port_name, e);
+        }
+    }
+}
+
+/*#[tauri::command]
+fn read() -> String {
+    match port {
+        Ok(mut port) => {
+            port.write_data_terminal_ready(true);
+            let mut serial_buf: Vec<u8> = vec![0; 1000];
+            println!("Receiving data on {} at {} baud:", &port_name, &baud_rate);
+            match port.read(serial_buf.as_mut_slice()) {
+                Ok(t) => return String::from_utf8(serial_buf[..t].to_vec()).expect("Found invalid UTF-8"),
+                Err(ref e) if e.kind() == io::ErrorKind::TimedOut => format!("timeout error {:?}!", e),
+                Err(e) => format!("error {:?}!", e),
+            }
+        }
+        Err(e) => {
+            eprintln!("Failed to open \"{}\". Error: {}", port_name, e);
+            ::std::process::exit(1);
+        }
+    }
+}*/
+
+pub fn init<R: Runtime>() -> TauriPlugin<R> {
+    Builder::new("serial")
+        .invoke_handler(tauri::generate_handler![open])
+        .setup(|app_handle| {
+            app_handle.manage(MyState::default());
+            Ok(())
+          })
+        .build()
+}
+
+======================================================================================
+
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
+
+
+mod plugins {
+  pub mod serial;
+}
+
+use plugins::serial;
+
+fn main() {
+  let context = tauri::generate_context!();
+  tauri::Builder::default()
+    .plugin(serial::init())
+    //.menu(tauri::Menu::os_default(&context.package_info().name))
+    .run(context)
+    .expect("error while running tauri application");
+}
+
+/*#[tauri::command]
+fn greet(name: &str) -> String {
+   format!("Hello, {}!", name)
+}
+
+fn main() {
+  tauri::Builder::default()
+    .invoke_handler(tauri::generate_handler![greet])
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
+}*/
+
+/*use tauri_plugin_serialport;
+fn main() {
+  let context = tauri::generate_context!();
+  tauri::Builder::default()
+    .menu(if cfg!(target_os = "macos") {
+      tauri::Menu::os_default(&context.package_info().name)
+    } else {
+      tauri::Menu::default()
+    })
+    .plugin(tauri_plugin_serialport::init())
+    .run(context)
+    .expect("failed to run app");
+}*/
