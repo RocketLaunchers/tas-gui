@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Telemetry Acquisition System GUI v1
+Date: 4/2022
+## Screenshots
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![App Screenshot](http://ramongarciajr.tech/TAS%20GUI.jpeg)
 
-## Available Scripts
 
-In the project directory, you can run:
+## Lessons Learned
 
-### `npm start`
+During my tenure as the telemetry lead, my involvement extended beyond the creation of TAS v2 and encompassed the development of accompanying software for the associated hardware. Regarding the software, we initially envisioned a desktop application that would feature a responsive graphical user interface (GUI) accessible through a web interface. This requirement led us to evaluate two potential options: Electron and Tauri, each offering distinct advantages and disadvantages.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Electron presented favorable aspects such as strong community support and user-friendliness. However, it posed certain challenges due to its age and lack of recent updates and support. On the other hand, Tauri emerged as a newer alternative that employed Rust as the server, instead of Node.js. Both frameworks offered web interfaces for the client-side GUI, but ultimately, our decision hinged on the fact that Electron's SerialPort API had become outdated and lacked sufficient support in recent times.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+While Tauri also faced limitations, including a single library for serial port communication with under-documented aspects, it nonetheless fulfilled its intended functionality. Ultimately, we selected Tauri due to its novelty and improved performance compared to Electron.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Optimizations
 
-### `npm run build`
+In general, the system demonstrated functionality; however, there were several optimizations that I aimed to implement. Firstly, an improvement was necessary in the storage and retrieval of map titles. These map titles are essentially individual blocks that are combined to create maps, similar to how Google Maps functions. In the current version, the approach involved downloading and locally storing all the titles, which proved to be a slow and space-consuming process. To enhance this aspect, a more efficient method for managing and accessing map titles needed to be devised.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Additionally, there was a need to optimize the processing of the incoming serial stream to effectively filter out erroneous data. By implementing better filtering techniques, we aimed to obtain a more precise representation of the rocket's trajectory during flight. This optimization would enable us to enhance the accuracy of the data obtained from the serial stream, ensuring a more reliable depiction of the rocket's behavior throughout its journey.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Run Locally
 
-### `npm run eject`
+Clone the project
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+  git clone https://github.com/LoneCuriosity/TAS_v2
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Open terminal in project root directory and run
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  npm run tauri dev
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## 🛠 Skills
+React.js, Rust, Tailwind
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Tech Stack
 
-### Code Splitting
+- Tauri
+- Tailwind
+- React.js
+- Rust
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ramongarciajr.tech/)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Authors
 
-### Making a Progressive Web App
+- [@LoneCursioty](https://www.github.com/LoneCursioty)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
