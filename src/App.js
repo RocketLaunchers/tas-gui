@@ -9,11 +9,19 @@ import { Serialport } from 'tauri-plugin-serialport-api';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { invoke } from '@tauri-apps/api/tauri'
+import { useEffect } from 'react';
 
 function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
+  const [packets, setPackets] = useState([])
   const [serialport] = useState(() => new Serialport({ path: 'COM7', baudRate: 115200 }))
 
+
+  useEffect(() => {
+    
+  }, [packets])
+  
   function openSerialport() {
     serialport
       .open()
@@ -48,7 +56,7 @@ function App() {
 
   function read() {
     serialport
-      .read({ timeout: 1 * 1000 })
+      .read({ timeout: 1 })
       .then((res) => listen())
       .catch((err) => {
         setConnectionState('btn-error')
@@ -58,7 +66,11 @@ function App() {
   function listen() {
     serialport
       .listen((data) => {
-        console.log('listen serialport data: ', data);
+        invoke('create_file', { data: data })
+        data = data.split("\r\n")
+        data.pop()
+        data.shift()
+        data = data.map(raw_packet => raw_packet.split(","))
       }, false)
       .then((res) => {
         setConnectionState('btn-success btn-disabled')
