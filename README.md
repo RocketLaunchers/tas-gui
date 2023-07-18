@@ -26,13 +26,13 @@ Additionally, there was a need to optimize the processing of the incoming serial
 Clone the project
 
 ```bash
-  git clone https://github.com/LoneCuriosity/tas-gui-v1
+git clone https://github.com/LoneCuriosity/tas-gui-v1
 ```
 
 Open terminal in project root directory and run
 
 ```bash
-  npm run tauri dev
+npm run tauri dev
 ```
 
 
