@@ -1,3 +1,4 @@
+
 import Map from './components/Map';
 import Graphs from './components/Graphs';
 import Console from './components/Console';
@@ -16,12 +17,19 @@ function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
   const [serialport] = useState(() => new Serialport({ path: 'COM7', baudRate: 115200 }))
+  const [information, setInformation] = useState('right');
+  const [yearArray, setYearArray] = useState([]);
+  const [monthsArray, setMonthsArray] = useState([]);
+  const [daysArray, setDaysArray] = useState([]);
 
 
+  let columnNames = ["years", "months", "days"];
   useEffect(() => {
     
   }, [packets])
   
+console.log("test");
+
   function openSerialport() {
     serialport
       .open()
@@ -67,6 +75,7 @@ function App() {
     serialport
       .listen((data) => {
         invoke('create_file', { data: data })
+       
         data = data.split("\r\n")
         data.pop()
         data.shift()
@@ -90,8 +99,36 @@ function App() {
       .catch((err) => {
         console.error(err);
       });
-  }
+   }
+  
+  async function readData (name){
+    try{ 
+      const tableData = await invoke('load_database', {column: name})
+      if (name === "years") {
+        await setYearArray(tableData);
+      } else if (name === "months") {
+        await setMonthsArray(tableData);
+      } else if (name === "days") {
+        await setDaysArray(tableData);
+      }
+      //setInformation('is it null ' + years[0]);
+      if (name === "years") {
+        setInformation('function works: '+ name + ' ' + yearArray[0]);
+      } else if (name === "months") {
+        setInformation('function works: '+ name + ' ' + monthsArray[0]);
+      } else if (name === "days") {
+        setInformation('function works: '+ name + ' ' + daysArray[0]);
+      }
+     
+    } catch (error) {
+      setInformation(error);
+    }
+    //setInformation(information === 'right' ? 'wrong' : 'right');
+   }
 
+   function readAllData(){
+    columnNames.forEach(name => readData(name));
+   };
   return (
     <div className='h-screen w-screen flex flex-col'>
 
@@ -101,8 +138,8 @@ function App() {
 
           <Map></Map>
 
-          <Console></Console>
-
+          <Console  information={information}></Console> 
+  
         </div>
 
         <div className="divider divider-horizontal"></div>
@@ -113,7 +150,7 @@ function App() {
 
           <div className='flex flex-1'>
 
-            <Controls connectionState={connectionState} openSerialport={openSerialport}></Controls>
+            <Controls connectionState={connectionState} openSerialport={openSerialport} loadData={readAllData}></Controls>
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 

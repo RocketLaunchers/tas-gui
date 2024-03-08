@@ -21,6 +21,7 @@ tauri = { version = "1.2.4", features = ["fs-all"] }
 thiserror = "1.0"
 serialport = "4.2.0"
 tauri-plugin-serialport = { path = "../tauri-plugin-serialport" }
+rusqlite = { version = "0.30.0", features = ["bundled"] }
 
 [features]
 # by default Tauri runs in production mode
