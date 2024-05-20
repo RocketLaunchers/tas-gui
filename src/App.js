@@ -74,24 +74,31 @@ console.log("test");
       });
   }
   function listen() {
-    serialport
-      .listen((data) => {
-        invoke('create_file', { data: data })
-       
-        data = data.split("\r\n")
-        data.pop()
-        data.shift()
-        data = data.map(raw_packet => raw_packet.split(","))
-      }, false)
-      .then((res) => {
-        setConnectionState('btn-success btn-disabled')
-        console.log('listen serialport: ', res);
-      })
-      .catch((err) => {
-        setConnectionState('btn-error')
-        console.error(err);
-      });
-  }
+      serialport
+        .listen((data) => {
+         // invoke('create_file', { data: data })
+          console.log('old')
+          console.log(data)
+          data = data.split("$")
+          data.shift()
+          console.log('new')
+          console.log(data)
+          for (let pack of data) {
+            pack = pack.split("\r\n")
+            pack.pop()
+            pack.shift()  
+            pack = pack.map(raw_packet => raw_packet.split(","))
+          }
+        }, false)
+        .then((res) => {
+          setConnectionState('btn-success btn-disabled')
+          console.log('listen serialport: ', res);
+        })
+        .catch((err) => {
+          setConnectionState('btn-error')
+          console.error(err);
+        });
+    }
   function cancelRead() {
     serialport
       .cancelRead()
