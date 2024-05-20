@@ -16,11 +16,32 @@ import { useEffect } from 'react';
 function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
-  const [serialport] = useState(() => new Serialport({ path: 'COM7', baudRate: 115200 }))
+  const [serialport] = useState(() => new Serialport({ path: '/dev/cu.usbmodem11301', baudRate: 115200 }))
   const [information, setInformation] = useState('right');
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
+  const [fixqualityArray, setfixqualityArray] = useState([]);
+  const [satellitiesArray, setsatellitiesArray] = useState([]);
+  const [weekdaysArray, setweekdaysArray] = useState([]);
+  const [timesArray, settimesArray] = useState([]);
+  const [Accel_xArray, setAccel_xArray] = useState([]);
+  const [Accel_yArray, setAccel_yArray] = useState([]);
+  const [Accel_ZArray, setAccel_ZArray] = useState([]);
+  const [gxArray, setgxArray] = useState([]);
+  const [gyArray, setgyArray] = useState([]);
+  const [gzArray, setgzArray] = useState([]);
+  const [Temperature_CArray, setTemperature_CArray] = useState([]);
+  const [TemperatureArray, setTemperatureArray] = useState([]);
+  const [PressuresArray, setPressuresArray] = useState([]);
+  const [AltitudesArray, setAltitudesArray] = useState([]);
+  const [HumidityArray, setHumidityArray] = useState([]);
+  const [fixsArray, setfixsArray] = useState([]);
+  const [latitudesArray, setlatitudesArray] = useState([]);
+  const [longitudesArray, setlongitudesArray] = useState([]);
+  const [speedArray, setspeedArray] = useState([]);
+  const [altitudes_gpsArray, setaltitudes_gpsArray] = useState([]);
+  const [currentIndex, setcurrentIndex] = useState(0);
 
 
   let columnNames = ["years", "months", "days"];
