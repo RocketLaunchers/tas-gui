@@ -2,28 +2,30 @@
 import Map from './components/Map';
 import Graphs from './components/Graphs';
 import Console from './components/Console';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Controls from './components/Controls';
 import Telemetry from './components/Telemetry';
 import Timeline from './components/Timeline';
 import { Serialport } from 'tauri-plugin-serialport-api';
-import { useState } from 'react';
+//import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { invoke } from '@tauri-apps/api/tauri'
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
+import { listen } from '@tauri-apps/api/event';
 
 function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
   const [serialport] = useState(() => new Serialport({ path: 'COM7', baudRate: 115200 }))
-  const [information, setInformation] = useState('right');
+  const [information, setInformation] = useState('READY');
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
 
 
-  let columnNames = ["years", "months", "days"];
+  //let columnNames = ["years", "months", "days"];
+  let columnNames = ["years"];
   useEffect(() => {
     
   }, [packets])
@@ -106,23 +108,22 @@ console.log("test");
       const tableData = await invoke('load_database', {column: name})
       if (name === "years") {
         await setYearArray(tableData);
-      } else if (name === "months") {
-        await setMonthsArray(tableData);
-      } else if (name === "days") {
-        await setDaysArray(tableData);
-      }
-      //setInformation('is it null ' + years[0]);
-      if (name === "years") {
         setInformation('function works: '+ name + ' ' + yearArray[0]);
-      } else if (name === "months") {
-        setInformation('function works: '+ name + ' ' + monthsArray[0]);
-      } else if (name === "days") {
-        setInformation('function works: '+ name + ' ' + daysArray[0]);
-      }
+      } 
+      //if (name === "years") {
+      //}
      
     } catch (error) {
       setInformation(error);
     }
+    //try{
+      //if (name === "years") {
+      //  setInformation('function works: '+ name + ' ' + yearArray[0]);
+      //}
+    //} catch (error) {
+    //  setInformation(error);
+    //}
+
     //setInformation(information === 'right' ? 'wrong' : 'right');
    }
 
@@ -180,5 +181,25 @@ console.log("test");
     </div>
   );
 }
-
+////////////////     4/17/24     //////////////////////////////
+//function CLOCK() {
+//  const [time, setTime] = useState('');
+//  
+//  useEffect(() => {
+//    const updateClock = async () => {
+//      //Listen for messages from Rust
+//      await listen('tauri:updateTime', (event) => {
+//        // Update state with recieved time
+//        setTime(event.payload);
+//      });
+//    };
+//  }, []);
+//
+//  return (
+//    <div>
+//
+////////////////     4/17/24     //////////////////////////////
+  
+   
+    
 export default App;
