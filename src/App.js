@@ -46,9 +46,7 @@ function App() {
  
   const [live, setliveData] = useState(true);
 
-  let integer_column_names = ["years", "months", "days", "fixquality", "satellities"];
-  let string_column_names = ["weekdays", "times"];
-  let float_column_names = ["Accel_x", "Accel_y", "Accel_Z", "gx", "gy", "gz", "Temperature_C", "Temperature", "Pressures", "Altitudes", "Humidity", "fixs", "latitudes", "longitudes", "speed", "altitude_gps"];
+ 
   useEffect(() => {
     
   }, [packets])
@@ -184,9 +182,7 @@ function App() {
     <Database
     setInformation={setInformation} 
     setliveData={setliveData} 
-    integer_column_names={integer_column_names}
-    float_column_names={float_column_names}
-    string_column_names={string_column_names}>   
+   >   
     </Database>
   ); 
 }
