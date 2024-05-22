@@ -6,6 +6,7 @@ import React from 'react';
 import Controls from './components/Controls';
 import Telemetry from './components/Telemetry';
 import Timeline from './components/Timeline';
+import Database from './components/database';
 import { Serialport } from 'tauri-plugin-serialport-api';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -43,13 +44,16 @@ function App() {
   const [altitudes_gpsArray, setaltitudes_gpsArray] = useState([]);
   const [currentIndex, setcurrentIndex] = useState(0);
  
+  const [live, setliveData] = useState(true);
 
-  let columnNames = ["years", "months", "days"];
+  let integer_column_names = ["years", "months", "days", "fixquality", "satellities"];
+  let string_column_names = ["weekdays", "times"];
+  let float_column_names = ["Accel_x", "Accel_y", "Accel_Z", "gx", "gy", "gz", "Temperature_C", "Temperature", "Pressures", "Altitudes", "Humidity", "fixs", "latitudes", "longitudes", "speed", "altitude_gps"];
   useEffect(() => {
     
   }, [packets])
   
-console.log("test");
+
 
   function openSerialport() {
     serialport
@@ -124,7 +128,8 @@ console.log("test");
   
   
 
-  return (
+  if (live){
+    return(
     <div className='h-screen w-screen flex flex-col'>
 
       <div className='flex w-full flex-1 p-2'>
@@ -141,7 +146,7 @@ console.log("test");
 
         <div className='flex flex-col flex-1'>
 
-          <Graphs></Graphs>
+          <Graphs setliveData={setliveData}></Graphs>
 
           <div className='flex flex-1'>
 
@@ -174,6 +179,17 @@ console.log("test");
 
     </div>
   );
+} else { 
+  return(
+    <Database
+    setInformation={setInformation} 
+    setliveData={setliveData} 
+    integer_column_names={integer_column_names}
+    float_column_names={float_column_names}
+    string_column_names={string_column_names}>   
+    </Database>
+  ); 
+}
 }
 
 export default App;
