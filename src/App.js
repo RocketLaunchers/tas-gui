@@ -122,34 +122,8 @@ console.log("test");
       });
    }
   
-  async function readData (name){
-    try{ 
-      const tableData = await invoke('load_database', {column: name})
-      if (name === "years") {
-        await setYearArray(tableData);
-      } else if (name === "months") {
-        await setMonthsArray(tableData);
-      } else if (name === "days") {
-        await setDaysArray(tableData);
-      }
-      //setInformation('is it null ' + years[0]);
-      if (name === "years") {
-        setInformation('function works: '+ name + ' ' + yearArray[0]);
-      } else if (name === "months") {
-        setInformation('function works: '+ name + ' ' + monthsArray[0]);
-      } else if (name === "days") {
-        setInformation('function works: '+ name + ' ' + daysArray[0]);
-      }
-     
-    } catch (error) {
-      setInformation(error);
-    }
-    //setInformation(information === 'right' ? 'wrong' : 'right');
-   }
+  
 
-   function readAllData(){
-    columnNames.forEach(name => readData(name));
-   };
   return (
     <div className='h-screen w-screen flex flex-col'>
 
@@ -171,7 +145,7 @@ console.log("test");
 
           <div className='flex flex-1'>
 
-            <Controls connectionState={connectionState} openSerialport={openSerialport} loadData={readAllData}></Controls>
+            <Controls connectionState={connectionState} openSerialport={openSerialport}></Controls>
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 

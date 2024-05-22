@@ -1,4 +1,4 @@
-const Controls = ({connectionState, openSerialport, loadData}) => {
+const Controls = ({connectionState, openSerialport}) => {
   return (
     <div className='flex-1'>
       <div className="divider uppercase">controls</div>
@@ -23,7 +23,6 @@ const Controls = ({connectionState, openSerialport, loadData}) => {
         </div>
         <button className="btn btn-outline btn-error uppercase">shutdown</button>
         <button className={"btn btn-outline uppercase " + connectionState} onClick={openSerialport}>connect</button>
-        <button className={"btn btn-outline btn-error uppercase"} onClick={loadData}>loadData</button>
       </div>
     </div>
   );
