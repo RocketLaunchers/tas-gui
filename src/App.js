@@ -15,9 +15,10 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect } from 'react';
 
 function App() {
+  const [COMPort, setCOMPort] = useState('COM3');
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
-  const [serialport] = useState(() => new Serialport({ path: '/dev/cu.usbmodem11301', baudRate: 115200 }))
+  const [serialport, setSerialport] = useState(() => new Serialport({ path:`${COMPort}`, baudRate: 115200 }))
   const [information, setInformation] = useState('right');
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
@@ -51,7 +52,11 @@ function App() {
     
   }, [packets])
   
+  useEffect(()=>{
 
+    const newSerialPort = new Serialport({path: COMPort, baudRate: 115200})
+    setSerialport(newSerialPort)
+  },[COMPort])
 
   function openSerialport() {
     serialport
@@ -97,12 +102,22 @@ function App() {
   function listen() {
     serialport
       .listen((data) => {
-        invoke('create_file', { data: data })
-       
-        data = data.split("\r\n")
-        data.pop()
+       // invoke('create_file', { data: data })
+        data = data.split("$")
         data.shift()
-        data = data.map(raw_packet => raw_packet.split(","))
+        for (let pack of data) {
+          pack = pack.split("\r\n")
+          pack.pop()
+          pack.shift()  
+          pack = pack.map(raw_packet => raw_packet.split(","))
+          console.log('this is pack')
+          console.log(pack)
+          console.log('this is pack[0]')
+          console.log(pack[0])
+          console.log('this is pack[0][0]')
+          console.log(pack[0][0])
+          console.log()
+        }
       }, false)
       .then((res) => {
         setConnectionState('btn-success btn-disabled')
@@ -148,7 +163,7 @@ function App() {
 
           <div className='flex flex-1'>
 
-            <Controls connectionState={connectionState} openSerialport={openSerialport}></Controls>
+            <Controls connectionState={connectionState} openSerialport={openSerialport} setCOMPort={setCOMPort} COMPort={COMPort} setInformation={setInformation}></Controls>
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 
