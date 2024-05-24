@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import Controls from './components/Controls';
 import Telemetry from './components/Telemetry';
 import Timeline from './components/Timeline';
+import Database from './components/database';
 import { Serialport } from 'tauri-plugin-serialport-api';
 //import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,22 +16,47 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { listen } from '@tauri-apps/api/event';
 
 function App() {
+  const [COMPort, setCOMPort] = useState('COM3');
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
-  const [serialport] = useState(() => new Serialport({ path: 'COM7', baudRate: 115200 }))
-  const [information, setInformation] = useState('READY');
+  const [serialport, setSerialport] = useState(() => new Serialport({ path:`${COMPort}`, baudRate: 115200 }))
+  const [information, setInformation] = useState('right');
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
+  const [fixqualityArray, setfixqualityArray] = useState([]);
+  const [satellitiesArray, setsatellitiesArray] = useState([]);
+  const [weekdaysArray, setweekdaysArray] = useState([]);
+  const [timesArray, settimesArray] = useState([]);
+  const [Accel_xArray, setAccel_xArray] = useState([]);
+  const [Accel_yArray, setAccel_yArray] = useState([]);
+  const [Accel_ZArray, setAccel_ZArray] = useState([]);
+  const [gxArray, setgxArray] = useState([]);
+  const [gyArray, setgyArray] = useState([]);
+  const [gzArray, setgzArray] = useState([]);
+  const [Temperature_CArray, setTemperature_CArray] = useState([]);
+  const [TemperatureArray, setTemperatureArray] = useState([]);
+  const [PressuresArray, setPressuresArray] = useState([]);
+  const [AltitudesArray, setAltitudesArray] = useState([]);
+  const [HumidityArray, setHumidityArray] = useState([]);
+  const [fixsArray, setfixsArray] = useState([]);
+  const [latitudesArray, setlatitudesArray] = useState([]);
+  const [longitudesArray, setlongitudesArray] = useState([]);
+  const [speedArray, setspeedArray] = useState([]);
+  const [altitudes_gpsArray, setaltitudes_gpsArray] = useState([]);
+  const [currentIndex, setcurrentIndex] = useState(0);
+ 
+  const [live, setliveData] = useState(true);
 
-
-  //let columnNames = ["years", "months", "days"];
-  let columnNames = ["years"];
   useEffect(() => {
     
   }, [packets])
   
-console.log("test");
+  useEffect(()=>{
+
+    const newSerialPort = new Serialport({path: COMPort, baudRate: 115200})
+    setSerialport(newSerialPort)
+  },[COMPort])
 
   function openSerialport() {
     serialport
@@ -74,31 +100,34 @@ console.log("test");
       });
   }
   function listen() {
-      serialport
-        .listen((data) => {
-         // invoke('create_file', { data: data })
-          console.log('old')
-          console.log(data)
-          data = data.split("$")
-          data.shift()
-          console.log('new')
-          console.log(data)
-          for (let pack of data) {
-            pack = pack.split("\r\n")
-            pack.pop()
-            pack.shift()  
-            pack = pack.map(raw_packet => raw_packet.split(","))
-          }
-        }, false)
-        .then((res) => {
-          setConnectionState('btn-success btn-disabled')
-          console.log('listen serialport: ', res);
-        })
-        .catch((err) => {
-          setConnectionState('btn-error')
-          console.error(err);
-        });
-    }
+    serialport
+      .listen((data) => {
+       // invoke('create_file', { data: data })
+        data = data.split("$")
+        data.shift()
+        for (let pack of data) {
+          pack = pack.split("\r\n")
+          pack.pop()
+          pack.shift()  
+          pack = pack.map(raw_packet => raw_packet.split(","))
+          console.log('this is pack')
+          console.log(pack)
+          console.log('this is pack[0]')
+          console.log(pack[0])
+          console.log('this is pack[0][0]')
+          console.log(pack[0][0])
+          console.log()
+        }
+      }, false)
+      .then((res) => {
+        setConnectionState('btn-success btn-disabled')
+        console.log('listen serialport: ', res);
+      })
+      .catch((err) => {
+        setConnectionState('btn-error')
+        console.error(err);
+      });
+  }
   function cancelRead() {
     serialport
       .cancelRead()
@@ -110,34 +139,9 @@ console.log("test");
       });
    }
   
-  async function readData (name){
-    try{ 
-      const tableData = await invoke('load_database', {column: name})
-      if (name === "years") {
-        await setYearArray(tableData);
-        setInformation('function works: '+ name + ' ' + yearArray[0]);
-      } 
-      //if (name === "years") {
-      //}
-     
-    } catch (error) {
-      setInformation(error);
-    }
-    //try{
-      //if (name === "years") {
-      //  setInformation('function works: '+ name + ' ' + yearArray[0]);
-      //}
-    //} catch (error) {
-    //  setInformation(error);
-    //}
 
-    //setInformation(information === 'right' ? 'wrong' : 'right');
-   }
-
-   function readAllData(){
-    columnNames.forEach(name => readData(name));
-   };
-  return (
+  if (live){
+    return(
     <div className='h-screen w-screen flex flex-col'>
 
       <div className='flex w-full flex-1 p-2'>
@@ -154,11 +158,11 @@ console.log("test");
 
         <div className='flex flex-col flex-1'>
 
-          <Graphs></Graphs>
+          <Graphs setliveData={setliveData}></Graphs>
 
           <div className='flex flex-1'>
 
-            <Controls connectionState={connectionState} openSerialport={openSerialport} loadData={readAllData}></Controls>
+            <Controls connectionState={connectionState} openSerialport={openSerialport} setCOMPort={setCOMPort} COMPort={COMPort} setInformation={setInformation}></Controls>
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 
@@ -187,6 +191,15 @@ console.log("test");
 
     </div>
   );
+} else { 
+  return(
+    <Database
+    setInformation={setInformation} 
+    setliveData={setliveData} 
+   >   
+    </Database>
+  ); 
+}
 }
 ////////////////     4/17/24     //////////////////////////////
 //function CLOCK() {

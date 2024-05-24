@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+import { useEffect, useRef, useState } from 'react';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -54,14 +54,20 @@ export const data = {
   ],
 };
 
-const Graphs = () => {
+
+
+const Graphs = ({setliveData}) => {
+const [activeTab, setActiveTab] = useState('Live');
+
+const handleTabClick = (tab) => {
+  setActiveTab(tab);
+  setliveData((prevLive)=>!prevLive);
+};
   return (
     <div className='flex flex-col flex-1'>
       <div className="divider uppercase">graphs</div>
       <div className="tabs">
-        <button className="tab tab-bordered">Tab 1</button>
-        <button className="tab tab-bordered tab-active">Tab 2</button>
-        <button className="tab tab-bordered">Tab 3</button>
+      <button id="DatabaseTab" className={`tab tab-bordered tab-${activeTab === 'Databases' ? 'active' : ''}`} onClick={() => handleTabClick('Databases')}>Databases</button>
       </div>
       <div className='flex-1'>
         <Line options={options} data={data} />
