@@ -1,12 +1,30 @@
+import React, { useState, useEffect } from 'react';
+import { listen } from '@tauri-apps/api/event';
+
 const Telemetry = () => {
+  // State to store the current time
+  const [time, setTime] = useState('00:00:00');
+
+  useEffect(() => {
+    const updateClock = async () => {
+      // Listen for messages form Rust (Tauri)
+      await listen('tauri:updateTime', (event) => {
+        //update state with received time
+        setTime(event.payload);
+      });
+    };
+    updateClock();
+  }, []);
+
+
     return (
         <div className='flex-1'>
             <div className="divider uppercase">mission clock</div>
             <span className="flex countdown font-mono text-6xl justify-center">
             -
-            <span style={{ "--value": 0 }}></span>:
-            <span style={{ "--value": 3 }}></span>:
-            <span style={{ "--value": 44 }}></span>
+            <span style={{ "--value": time.substring(0, 1) }}></span>:
+            <span style={{ "--value": time.substring(3, 4) }}></span>:
+            <span style={{ "--value": time.substring(6, 7) }}></span>
             </span>
 
             <div className="divider uppercase">telemtry</div>

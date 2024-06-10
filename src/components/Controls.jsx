@@ -1,4 +1,4 @@
- const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation}) => {
+const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation}) => {
   function setPort (setCOMPort, COMPort) {
   console.log('old port')
   console.log(COMPort)

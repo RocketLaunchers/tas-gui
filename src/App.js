@@ -2,17 +2,18 @@
 import Map from './components/Map';
 import Graphs from './components/Graphs';
 import Console from './components/Console';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Controls from './components/Controls';
 import Telemetry from './components/Telemetry';
 import Timeline from './components/Timeline';
 import Database from './components/database';
 import { Serialport } from 'tauri-plugin-serialport-api';
-import { useState } from 'react';
+//import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { invoke } from '@tauri-apps/api/tauri'
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
+import { listen } from '@tauri-apps/api/event';
 
 function App() {
   const [COMPort, setCOMPort] = useState('COM3');
@@ -47,7 +48,6 @@ function App() {
  
   const [live, setliveData] = useState(true);
 
- 
   useEffect(() => {
     
   }, [packets])
@@ -259,7 +259,6 @@ function App() {
       });
    }
   
-  
 
   if (live){
     return(
@@ -327,5 +326,25 @@ function App() {
   ); 
 }
 }
-
+////////////////     4/17/24     //////////////////////////////
+//function CLOCK() {
+//  const [time, setTime] = useState('');
+//  
+//  useEffect(() => {
+//    const updateClock = async () => {
+//      //Listen for messages from Rust
+//      await listen('tauri:updateTime', (event) => {
+//        // Update state with recieved time
+//        setTime(event.payload);
+//      });
+//    };
+//  }, []);
+//
+//  return (
+//    <div>
+//
+////////////////     4/17/24     //////////////////////////////
+  
+   
+    
 export default App;
