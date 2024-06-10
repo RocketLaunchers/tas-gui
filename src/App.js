@@ -291,7 +291,9 @@ function App() {
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 
-            <Telemetry></Telemetry>
+            <Telemetry
+              altitudes_array={AltitudesArray}
+            ></Telemetry>
 
           </div>
 
