@@ -36,29 +36,61 @@ function getRandomInt(max, min) {
   return Math.floor(Math.random() * max) + min;
 }
 
-export const data = {
+// export const data = {
+//   labels,
+//   datasets: [
+//     {
+//       label: 'Dataset 1',
+//       data: labels.map(() => getRandomInt(1000, -1000)),
+//       borderColor: 'rgb(255, 99, 132)',
+//       backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//     },
+//     {
+//       label: 'Dataset 2',
+//       data: labels.map(() => getRandomInt(1000, -1000)),
+//       borderColor: 'rgb(53, 162, 235)',
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//     },
+//   ],
+// };
+
+
+
+const Graphs = ({setliveData, times_data, altitudes_data, setInformation}) => {
+const [activeTab, setActiveTab] = useState('Live');
+const labels = times_data;
+let data
+if (altitudes_data != undefined){
+ data = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
-      data: labels.map(() => getRandomInt(1000, -1000)),
+      label: 'BAR_Altitude',
+      data: labels.map((label, index) => altitudes_data[index]),
       borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      backgroundColor: 'rgb(255, 99, 132, 0.5)',
     },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => getRandomInt(1000, -1000)),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
-
-
-const Graphs = ({setliveData}) => {
-const [activeTab, setActiveTab] = useState('Live');
-
+  ]
+}
+} else {
+  data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: labels.map(() => getRandomInt(1000, -1000)),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Dataset 2',
+        data: labels.map(() => getRandomInt(1000, -1000)),
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  }
+}
 const handleTabClick = (tab) => {
   setActiveTab(tab);
   setliveData((prevLive)=>!prevLive);
