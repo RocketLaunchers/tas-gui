@@ -118,6 +118,7 @@ function App() {
   }
   useEffect(() => {
     //console.log('altitudes' + AltitudesArray);
+    setAltitudesArray(AltitudesArray);
     console.log('times' + timesArray);
   }, AltitudesArray)
   function parseMessage(inputString){

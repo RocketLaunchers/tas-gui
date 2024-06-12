@@ -5,9 +5,9 @@ const Telemetry = ({altitudes_array}) => {
             <div className="divider uppercase">mission clock</div>
             <span className="flex countdown font-mono text-6xl justify-center">
             -
-            <span style={{ "--value": time.substring(0, 1) }}></span>:
-            <span style={{ "--value": time.substring(3, 4) }}></span>:
-            <span style={{ "--value": time.substring(6, 7) }}></span>
+            <span style={{ "--value": 0 }}></span>:
+            <span style={{ "--value": 3 }}></span>:
+            <span style={{ "--value": 44 }}></span>
             </span>
 
             <div className="divider uppercase">telemtry</div>
@@ -21,7 +21,7 @@ const Telemetry = ({altitudes_array}) => {
                 <p className='font-mono text-md'>BME Pres: 0.6 bar</p>
             </div>
             <div className='flex-1'>
-                <p className='font-mono text-md'>`Altitude: ${altitudes_array[current_index]}`</p>
+                <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length-1]}</p>
             </div>
             </div>
         </div>
