@@ -8,11 +8,12 @@ use rusqlite::{Connection, Result};
 //mod clock;
 
 #[tauri::command]
-fn create_file(data: String) {
+fn create_file(data: String, file: String) {
   use std::fs::File;
   use std::io::prelude::*;
 
-  let mut file = File::options().append(true).write(true).create(true).open("C:/Users/ramga/Desktop/test.txt").unwrap();
+  let pathname = format!("C:{}", file);
+  let mut file = File::options().append(true).write(true).create(true).open(pathname).unwrap();
   
   file.write_all(data.as_bytes()).unwrap();
 }

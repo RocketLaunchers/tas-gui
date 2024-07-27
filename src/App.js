@@ -25,7 +25,7 @@ function App() {
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
   const [fixqualityArray, setfixqualityArray] = useState([]);
-  const [satellitiesArray, setsatellitiesArray] = useState([]);
+  const [satellitesArray, setsatellitesArray] = useState([]);
   const [weekdaysArray, setweekdaysArray] = useState([]);
   const [timesArray, settimesArray] = useState([]);
   const [Accel_xArray, setAccel_xArray] = useState([]);
@@ -45,6 +45,9 @@ function App() {
   const [speedArray, setspeedArray] = useState([]);
   const [altitudes_gpsArray, setaltitudes_gpsArray] = useState([]);
   const [currentIndex, setcurrentIndex] = useState(0);
+  const [rssiArray, setrssiArray] = useState([]);
+  const [snrArray, setsnrArray] = useState([]);
+  const [filepath, setfilepath] =useState();
  
   const [live, setliveData] = useState(true);
 
@@ -58,7 +61,7 @@ function App() {
     setSerialport(newSerialPort)
   },[COMPort])
 
-  function parsePack(pack1, pack2, pack3, pack4, pack5, pack6, pack7, pack8, pack9, pack10, pack11){
+  function parsePack(pack1, pack2, pack3, pack4, pack5, pack6, pack7, pack8, pack9, pack10, pack11, pack12, pack13, pack14, pack15, pack16, pack17, pack18){
      parseMessage(pack1);
     // Accel_ys.push(pack2); 
      setAccel_yArray(prevAccely => [...prevAccely, pack2]);
@@ -81,20 +84,18 @@ function App() {
     // Humidities.push(pack11);
      setHumidityArray(prevHumidity => [...prevHumidity, pack11]);
     // fixs.push(pack12);
-    // setfixsArray(prevfixs => [...prevfixs, pack12]);
+     setfixsArray(prevfixs => [...prevfixs, pack12]);
     // fixqualities.push(pack13)
-    // setfixqualityArray(fixqualities);
+     setfixqualityArray(prevfixqlt => [...prevfixqlt, pack13]);
     // latitudes.push(pack14);
-    // setlatitudesArray(latitudes);
+     setlatitudesArray(prevlat => [...prevlat, pack14]);
     // longitudes.push(pack15);
-    // setlongitudesArray(longitudes);
+     setlongitudesArray(prevlon => [...prevlon, pack15]);
     // speeds.push(pack16);
-    // setspeedArray(speeds);
+     setspeedArray(prevsp => [...prevsp, pack16]);
     // altitudesgps.push(pack17);
-    // setaltitudes_gpsArray(altitudesgps);
-    // satellelites.push(pack18);
-    // setsatellitiesArray(satellelites);
-  
+     setaltitudes_gpsArray(prevalt => [...prevalt, pack17]);  
+     setsatellitesArray(prevsat => [...prevsat, pack18]);
   }
   function parsePack2 (pack1, pack2, pack3, pack4, pack5, pack6, pack7, pack8, pack9, pack10, pack11, pack12, pack13, pack14, pack15, pack16, pack17, pack18){
     parseMessage(pack1);
@@ -114,11 +115,10 @@ function App() {
     setlongitudesArray((prevState)=>prevState.push(pack15));
     setspeedArray((prevState)=>prevState.push(pack16));
     setaltitudes_gpsArray((prevState)=>prevState.push(pack17));
-    setsatellitiesArray((prevState)=>prevState.push(pack18));
+    setsatellitesArray((prevState)=>prevState.push(pack18));
   }
   useEffect(() => {
     //console.log('altitudes' + AltitudesArray);
-    setAltitudesArray(AltitudesArray);
     console.log('times' + timesArray);
   }, AltitudesArray)
   function parseMessage(inputString){
@@ -209,7 +209,7 @@ function App() {
   function listen() {
     serialport
       .listen((data) => {
-       // invoke('create_file', { data: data })
+       // invoke('create_file', { data: data, path: filepath})
         data = data.split("$")
         data.shift()
         for (let pack of data) {
@@ -217,13 +217,15 @@ function App() {
           pack.pop()
           pack.shift()  
           pack = pack.map(raw_packet => raw_packet.split(","))
-          if(pack.length !== 0){
+          if(pack.length !== 0 && pack[0].length !== 0 && pack[1].length !== 0 && pack[2].lenght != 0){
             console.log('this is pack')
             console.log(pack)
             console.log('this is pack[0]')
             console.log(pack[0])
             console.log('this is pack[0][0]')
             console.log(pack[0][0])
+            setsnrArray( prevsnr => [...prevsnr, pack[2][0]])
+            setrssiArray(prevrssi => [...prevrssi, pack[1][0]])
             parsePack(
               pack[0][0], 
               pack[0][1], 
@@ -235,7 +237,15 @@ function App() {
               pack[0][7], 
               pack[0][8], 
               pack[0][9], 
-              pack[0][10]
+              pack[0][10],
+              pack[0][11],
+              pack[0][12],
+              pack[0][13],
+              pack[0][14],
+              pack[0][15],
+              pack[0][16],
+              pack[0][17],
+              pack[0][18]
             )
         }
         }
@@ -288,12 +298,24 @@ function App() {
 
           <div className='flex flex-1'>
 
-            <Controls connectionState={connectionState} openSerialport={openSerialport} setCOMPort={setCOMPort} COMPort={COMPort} setInformation={setInformation}></Controls>
+            <Controls 
+            connectionState={connectionState} 
+            openSerialport={openSerialport} 
+            setCOMPort={setCOMPort} 
+            COMPort={COMPort}
+            setInformation={setInformation}
+            setfilepath={setfilepath}
+            filepath={filepath}
+            ></Controls>
 
             <div className="divider divider-horizontal mt-[16px]"></div>
 
             <Telemetry
               altitudes_array={AltitudesArray}
+              satellites={satellitesArray}
+              rssi={rssiArray}
+              snr={snrArray}
+              pressure={PressuresArray}
             ></Telemetry>
 
           </div>
