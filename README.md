@@ -1,13 +1,13 @@
 # Telemetry Acquisition System GUI v1
-Date: 4/2022
+Date: 7/2024
 ## Screenshots
 
 ![App Screenshot](http://ramongarciajr.tech/TAS%20GUI.jpeg)
 
 
 ## Lessons Learned
-
-During my tenure as the telemetry lead, my involvement extended beyond the creation of TAS v2 and encompassed the development of accompanying software for the associated hardware. Regarding the software, we initially envisioned a desktop application that would feature a responsive graphical user interface (GUI) accessible through a web interface. This requirement led us to evaluate two potential options: Electron and Tauri, each offering distinct advantages and disadvantages.
+ramongarciajr:
+During my tenure as the telemetry lead(Fall 2022-Summer 2023), my involvement extended beyond the creation of TAS v2 and encompassed the development of accompanying software for the associated hardware. Regarding the software, we initially envisioned a desktop application that would feature a responsive graphical user interface (GUI) accessible through a web interface. This requirement led us to evaluate two potential options: Electron and Tauri, each offering distinct advantages and disadvantages.
 
 Electron presented favorable aspects such as strong community support and user-friendliness. However, it posed certain challenges due to its age and lack of recent updates and support. On the other hand, Tauri emerged as a newer alternative that employed Rust as the server, instead of Node.js. Both frameworks offered web interfaces for the client-side GUI, but ultimately, our decision hinged on the fact that Electron's SerialPort API had become outdated and lacked sufficient support in recent times.
 
@@ -26,7 +26,7 @@ Additionally, there was a need to optimize the processing of the incoming serial
 Clone the project
 
 ```bash
-git clone https://github.com/LoneCuriosity/tas-gui-v1
+git clone https://github.com/LoneCuriosity/tas-gui-v1.1.0
 ```
 
 Open terminal in project root directory and run
@@ -53,5 +53,6 @@ React.js, Rust, Tailwind
 
 ## Authors
 
-- [@LoneCursioty](https://www.github.com/LoneCursioty)
-
+- [@LoneCuriosity](https://www.github.com/LoneCuriosity)
+- [@HECTOR-SO](https://github.com/HECTOR-SO)
+- [@JofredG](https://github.com/JofredG)

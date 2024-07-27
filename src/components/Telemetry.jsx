@@ -21,7 +21,6 @@ const Telemetry = ({altitudes_array}) => {
                 <p className='font-mono text-md'>BME Pres: 0.6 bar</p>
             </div>
             <div className='flex-1'>
-                <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length-1]}</p>
             </div>
             </div>
         </div>
