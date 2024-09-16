@@ -1,16 +1,32 @@
+import React, { useState, useEffect } from 'react';
+
 
 const Telemetry = ({altitudes_array, satellites, rssi, snr, pressure}) => {
+	const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const updateTime = () => {
+            setCurrentTime(new Date());
+        };
+
+        // Update time every second
+        const interval = setInterval(updateTime, 1000);
+
+        // Clean up interval on component unmount
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className='flex-1'>
             <div className="divider uppercase">mission clock</div>
-            <span className="flex countdown font-mono text-6xl justify-center">
-            -
-            <span style={{ "--value": 0 }}></span>:
-            <span style={{ "--value": 3 }}></span>:
-            <span style={{ "--value": 44 }}></span>
+            <span className="flex countdown font-mono-md  text-6xl justify-center">
             </span>
+<span className="flex countdown font-mono text-3xl justify-center">
+  {currentTime.toLocaleTimeString()}
+</span>
 
-            <div className="divider uppercase">telemtry</div>
+
+            <div className="divider uppercase">telemetry</div>
             <div className='flex'>
             <div className='flex flex-col'>
                 <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length-1]}</p>
