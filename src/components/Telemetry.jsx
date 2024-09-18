@@ -4,41 +4,61 @@ import React, { useState, useEffect } from 'react';
 const Telemetry = ({altitudes_array, satellites, rssi, snr, pressure}) => {
 	const [currentTime, setCurrentTime] = useState(new Date());
 
+   const [launchTime] = useState(new Date());
+    
+    // State to store the elapsed time in seconds
+    const [elapsedTime, setElapsedTime] = useState(0);
+
     useEffect(() => {
-        const updateTime = () => {
-            setCurrentTime(new Date());
+        const updateElapsedTime = () => {
+            // Calculate the elapsed time in seconds
+            const currentTime = new Date();
+            const diffInSeconds = Math.floor((currentTime - launchTime) / 1000);
+            setElapsedTime(diffInSeconds);
         };
 
-        // Update time every second
-        const interval = setInterval(updateTime, 1000);
+        // Update elapsed time every second
+        const interval = setInterval(updateElapsedTime, 1000);
 
-        // Clean up interval on component unmount
+        // Clean up the interval on component unmount
         return () => clearInterval(interval);
-    }, []);
+    }, [launchTime]);
+
+    // Function to format elapsed time
+    const formatTime = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
 
     return (
         <div className='flex-1'>
-            <div className="divider uppercase">mission clock</div>
-            <span className="flex countdown font-mono-md  text-6xl justify-center">
+            <div className="divider uppercase">Mission Clock</div>
+            <span className="flex countdown font-mono-md text-5xl justify-center">
+                {formatTime(elapsedTime)} {/* Display the formatted elapsed time */}
             </span>
-<span className="flex countdown font-mono text-3xl justify-center">
-  {currentTime.toLocaleTimeString()}
-</span>
 
-
-            <div className="divider uppercase">telemetry</div>
+            <div className="divider uppercase">Telemetry</div>
             <div className='flex'>
-            <div className='flex flex-col'>
-                <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length-1]}</p>
-                <p className='font-mono text-md'>{rssi[rssi.length-1]}: dBm</p>
-                <p className='font-mono text-md'>{snr[snr.length-1]}: dBm</p>
-                <p className='font-mono text-md'>TLM &Delta;: 0.4 sec</p>
-                <p className='font-mono text-md'>GPS Sats: {satellites[satellites.length-1]}</p>
-                <p className='font-mono text-md'>BME Pres: {pressure[pressure.length-1]} bar</p>
-            </div>
+                <div className='flex flex-col'>
+                    <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length - 1]}</p>
+                    <p className='font-mono text-md'>{rssi[rssi.length - 1]}: dBm</p>
+                    <p className='font-mono text-md'>{snr[snr.length - 1]}: dBm</p>
+                    <p className='font-mono text-md'>TLM &Delta;: 0.4 sec</p>
+                    <p className='font-mono text-md'>GPS Sats: {satellites[satellites.length - 1]}</p>
+                    <p className='font-mono text-md'>BME Pres: {pressure[pressure.length - 1]} bar</p>
+                </div>
             </div>
         </div>
     );
 }
 
 export default Telemetry;
+
+
+
+
+
+
+
