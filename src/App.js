@@ -52,95 +52,95 @@ function App() {
   const [live, setliveData] = useState(true);
 
   useEffect(() => {
-    
+	
   }, [packets])
   
   useEffect(()=>{
 
-    const newSerialPort = new Serialport({path: COMPort, baudRate: 115200})
-    setSerialport(newSerialPort)
+	const newSerialPort = new Serialport({path: COMPort, baudRate: 115200})
+	setSerialport(newSerialPort)
   },[COMPort])
 
   function parsePack(pack1, pack2, pack3, pack4, pack5, pack6, pack7, pack8, pack9, pack10, pack11, pack12, pack13, pack14, pack15, pack16, pack17, pack18){
-     parseMessage(pack1);
-    // Accel_ys.push(pack2); 
-     setAccel_yArray(prevAccely => [...prevAccely, pack2]);
-    // Accel_zs.push(pack3);
-     setAccel_ZArray(prevAccelz => [...prevAccelz, pack3]);
-    // gxs.push(pack4);
-     setgxArray(prevgxs => [...prevgxs, pack4]);
-    // gys.push(pack5);
-     setgyArray(prevgys => [...prevgys, pack5]);
-    // gzs.push(pack6);
-     setgzArray(prevgzs => [...prevgzs, pack6]);
-    // Temperature_Cs.push(pack7);
-     setTemperature_CArray(prevTempC => [...prevTempC, pack7]);
-    // Temperatures.push(pack8);
-     setTemperatureArray(prevTemp => [...prevTemp, pack8]);
-    // Pressures.push(pack9);
-     setPressuresArray(prevTPressure => [...prevTPressure, pack9]);
-    // Altitudes.push(pack10);
-     setAltitudesArray(prevAltitudesArray => [...prevAltitudesArray, pack10]);
-    // Humidities.push(pack11);
-     setHumidityArray(prevHumidity => [...prevHumidity, pack11]);
-    // fixs.push(pack12);
-     setfixsArray(prevfixs => [...prevfixs, pack12]);
-    // fixqualities.push(pack13)
-     setfixqualityArray(prevfixqlt => [...prevfixqlt, pack13]);
-    // latitudes.push(pack14);
-     setlatitudesArray(prevlat => [...prevlat, pack14]);
-    // longitudes.push(pack15);
-     setlongitudesArray(prevlon => [...prevlon, pack15]);
-    // speeds.push(pack16);
-     setspeedArray(prevsp => [...prevsp, pack16]);
-    // altitudesgps.push(pack17);
-     setaltitudes_gpsArray(prevalt => [...prevalt, pack17]);  
-     setsatellitesArray(prevsat => [...prevsat, pack18]);
+	 parseMessage(pack1);
+	// Accel_ys.push(pack2); 
+	 setAccel_yArray(prevAccely => [...prevAccely, pack2]);
+	// Accel_zs.push(pack3);
+	 setAccel_ZArray(prevAccelz => [...prevAccelz, pack3]);
+	// gxs.push(pack4);
+	 setgxArray(prevgxs => [...prevgxs, pack4]);
+	// gys.push(pack5);
+	 setgyArray(prevgys => [...prevgys, pack5]);
+	// gzs.push(pack6);
+	 setgzArray(prevgzs => [...prevgzs, pack6]);
+	// Temperature_Cs.push(pack7);
+	 setTemperature_CArray(prevTempC => [...prevTempC, pack7]);
+	// Temperatures.push(pack8);
+	 setTemperatureArray(prevTemp => [...prevTemp, pack8]);
+	// Pressures.push(pack9);
+	 setPressuresArray(prevTPressure => [...prevTPressure, pack9]);
+	// Altitudes.push(pack10);
+	 setAltitudesArray(prevAltitudesArray => [...prevAltitudesArray, pack10]);
+	// Humidities.push(pack11);
+	 setHumidityArray(prevHumidity => [...prevHumidity, pack11]);
+	// fixs.push(pack12);
+	 setfixsArray(prevfixs => [...prevfixs, pack12]);
+	// fixqualities.push(pack13)
+	 setfixqualityArray(prevfixqlt => [...prevfixqlt, pack13]);
+	// latitudes.push(pack14);
+	 setlatitudesArray(prevlat => [...prevlat, pack14]);
+	// longitudes.push(pack15);
+	 setlongitudesArray(prevlon => [...prevlon, pack15]);
+	// speeds.push(pack16);
+	 setspeedArray(prevsp => [...prevsp, pack16]);
+	// altitudesgps.push(pack17);
+	 setaltitudes_gpsArray(prevalt => [...prevalt, pack17]);  
+	 setsatellitesArray(prevsat => [...prevsat, pack18]);
   }
   function parsePack2 (pack1, pack2, pack3, pack4, pack5, pack6, pack7, pack8, pack9, pack10, pack11, pack12, pack13, pack14, pack15, pack16, pack17, pack18){
-    parseMessage(pack1);
-    setAccel_yArray((prevState)=>prevState.push(pack2));
-    setAccel_ZArray((prevState)=>prevState.push(pack3));
-    setgxArray((prevState)=>prevState.push(pack4));
-    setgyArray((prevState)=>prevState.push(pack5));
-    setgzArray((prevState)=>prevState.push(pack6));
-    setTemperature_CArray((prevState)=>prevState.push(pack7));
-    setTemperatureArray((prevState) => (prevState.push(pack8)));
-    setPressuresArray((prevState)=>prevState.push(pack9));
-    setAltitudesArray((prevState)=>prevState.push(pack10));
-    setHumidityArray((prevState)=>prevState.push(pack11));
-    setfixsArray((prevState)=>prevState.push(pack12));
-    setfixqualityArray((prevState)=>prevState.push(pack13));
-    setlatitudesArray((prevState)=>prevState.push(pack14));
-    setlongitudesArray((prevState)=>prevState.push(pack15));
-    setspeedArray((prevState)=>prevState.push(pack16));
-    setaltitudes_gpsArray((prevState)=>prevState.push(pack17));
-    setsatellitesArray((prevState)=>prevState.push(pack18));
+	parseMessage(pack1);
+	setAccel_yArray((prevState)=>prevState.push(pack2));
+	setAccel_ZArray((prevState)=>prevState.push(pack3));
+	setgxArray((prevState)=>prevState.push(pack4));
+	setgyArray((prevState)=>prevState.push(pack5));
+	setgzArray((prevState)=>prevState.push(pack6));
+	setTemperature_CArray((prevState)=>prevState.push(pack7));
+	setTemperatureArray((prevState) => (prevState.push(pack8)));
+	setPressuresArray((prevState)=>prevState.push(pack9));
+	setAltitudesArray((prevState)=>prevState.push(pack10));
+	setHumidityArray((prevState)=>prevState.push(pack11));
+	setfixsArray((prevState)=>prevState.push(pack12));
+	setfixqualityArray((prevState)=>prevState.push(pack13));
+	setlatitudesArray((prevState)=>prevState.push(pack14));
+	setlongitudesArray((prevState)=>prevState.push(pack15));
+	setspeedArray((prevState)=>prevState.push(pack16));
+	setaltitudes_gpsArray((prevState)=>prevState.push(pack17));
+	setsatellitesArray((prevState)=>prevState.push(pack18));
   }
   useEffect(() => {
-    //console.log('altitudes' + AltitudesArray);
-    console.log('times' + timesArray);
+	//console.log('altitudes' + AltitudesArray);
+	console.log('times' + timesArray);
   }, AltitudesArray)
   function parseMessage(inputString){
-    const pattern = /Message: \[(\d{4})\/(\d{1,2})\/(\d{1,2}) \((\w+)\) (\d{2}:\d{2}:\d{2})\] (-?\d+\.\d+)/;  
-    const match = inputString.match(pattern);
+	const pattern = /Message: \[(\d{4})\/(\d{1,2})\/(\d{1,2}) \((\w+)\) (\d{2}:\d{2}:\d{2})\] (-?\d+\.\d+)/;  
+	const match = inputString.match(pattern);
 
-    if(match) {
-      const year = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10);
-      const day = parseInt(match[3], 10);
-      const weekday = match[4];
-      const time = match[5];
-      const decimalValue = parseFloat(match[6]);
-      setYearArray(prevYear => [...prevYear, year]);
-      setMonthsArray(prevMonth => [...prevMonth, month]);
-      setDaysArray(prevDay => [...prevDay, day]);
-      setweekdaysArray(prevWeekday => [...prevWeekday,weekday]);
-      setAccel_xArray(prevAccelx => [...prevAccelx,decimalValue]); 
-      settimesArray(prevtimes => [...prevtimes, time]);
-      // setInformation(timesArray[timesArray.length-1]);
-      //console.log('this is times array' + timesArray);
-    }
+	if(match) {
+	  const year = parseInt(match[1], 10);
+	  const month = parseInt(match[2], 10);
+	  const day = parseInt(match[3], 10);
+	  const weekday = match[4];
+	  const time = match[5];
+	  const decimalValue = parseFloat(match[6]);
+	  setYearArray(prevYear => [...prevYear, year]);
+	  setMonthsArray(prevMonth => [...prevMonth, month]);
+	  setDaysArray(prevDay => [...prevDay, day]);
+	  setweekdaysArray(prevWeekday => [...prevWeekday,weekday]);
+	  setAccel_xArray(prevAccelx => [...prevAccelx,decimalValue]); 
+	  settimesArray(prevtimes => [...prevtimes, time]);
+	  // setInformation(timesArray[timesArray.length-1]);
+	  //console.log('this is times array' + timesArray);
+	}
   }
  let years = [];
  let months = [];
@@ -166,210 +166,219 @@ function App() {
  let altitudesgps = [];
  let satellelites = [];
   function openSerialport() {
-    serialport
-      .open()
-      .then((res) => read())
-      .catch((err) => {
-        setConnectionState('btn-error')
-        toast.error('Serial port not found.', {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        console.error(err);
-      });
+	serialport
+	  .open()
+	  .then((res) => read())
+	  .catch((err) => {
+		setConnectionState('btn-error')
+		toast.error('Serial port not found.', {
+		  position: "bottom-left",
+		  autoClose: 5000,
+		  hideProgressBar: false,
+		  closeOnClick: true,
+		  pauseOnHover: true,
+		  draggable: true,
+		  progress: undefined,
+		  theme: "dark",
+		});
+		console.error(err);
+	  });
   }
 
   function write() {
-    serialport
-      .write('t')
-      .then((res) => {
-        console.log('write serialport: ', res);
-      })
-      .catch((err) => {
-        setConnectionState('btn-error')
-        console.error(err);
-      });
+	serialport
+	  .write('t')
+	  .then((res) => {
+		console.log('write serialport: ', res);
+	  })
+	  .catch((err) => {
+		setConnectionState('btn-error')
+		console.error(err);
+	  });
   }
 
   function read() {
-    serialport
-      .read({ timeout: 1 })
-      .then((res) => listen())
-      .catch((err) => {
-        setConnectionState('btn-error')
-        console.error(err);
-      });
+	serialport
+	  .read({ timeout: 1 })
+	  .then((res) => listen())
+	  .catch((err) => {
+		setConnectionState('btn-error')
+		console.error(err);
+	  });
   }
   function listen() {
-    serialport
-      .listen((data) => {
-       // invoke('create_file', { data: data, path: filepath})
-        data = data.split("$")
-        data.shift()
-        for (let pack of data) {
-          pack = pack.split("\r\n")
-          pack.pop()
-          pack.shift()  
-          pack = pack.map(raw_packet => raw_packet.split(","))
-          if(pack.length !== 0 && pack[0].length !== 0 && pack[1].length !== 0 && pack[2].lenght != 0){
-            console.log('this is pack')
-            console.log(pack)
-            console.log('this is pack[0]')
-            console.log(pack[0])
-            console.log('this is pack[0][0]')
-            console.log(pack[0][0])
-            setsnrArray( prevsnr => [...prevsnr, pack[2][0]])
-            setrssiArray(prevrssi => [...prevrssi, pack[1][0]])
-            parsePack(
-              pack[0][0], 
-              pack[0][1], 
-              pack[0][2],
-              pack[0][3], 
-              pack[0][4], 
-              pack[0][5], 
-              pack[0][6], 
-              pack[0][7], 
-              pack[0][8], 
-              pack[0][9], 
-              pack[0][10],
-              pack[0][11],
-              pack[0][12],
-              pack[0][13],
-              pack[0][14],
-              pack[0][15],
-              pack[0][16],
-              pack[0][17],
-              pack[0][18]
-            )
-        }
-        }
-      }, false)
-      .then((res) => {
-        setConnectionState('btn-success btn-disabled')
-        console.log('listen serialport: ', res);
-      })
-      .catch((err) => {
-        setConnectionState('btn-error')
-        console.error(err);
-      });
+	serialport
+	  .listen((data) => {
+	   // invoke('create_file', { data: data, path: filepath})
+		data = data.split("$")
+		data.shift()
+		for (let pack of data) {
+		  pack = pack.split("\r\n")
+		  pack.pop()
+		  pack.shift()  
+		  pack = pack.map(raw_packet => raw_packet.split(","))
+		  if(pack.length !== 0 && pack[0].length !== 0 && pack[1].length !== 0 && pack[2].lenght != 0){
+			console.log('this is pack')
+			console.log(pack)
+			console.log('this is pack[0]')
+			console.log(pack[0])
+			console.log('this is pack[0][0]')
+			console.log(pack[0][0])
+			setsnrArray( prevsnr => [...prevsnr, pack[2][0]])
+			setrssiArray(prevrssi => [...prevrssi, pack[1][0]])
+			parsePack(
+			  pack[0][0], 
+			  pack[0][1], 
+			  pack[0][2],
+			  pack[0][3], 
+			  pack[0][4], 
+			  pack[0][5], 
+			  pack[0][6], 
+			  pack[0][7], 
+			  pack[0][8], 
+			  pack[0][9], 
+			  pack[0][10],
+			  pack[0][11],
+			  pack[0][12],
+			  pack[0][13],
+			  pack[0][14],
+			  pack[0][15],
+			  pack[0][16],
+			  pack[0][17],
+			  pack[0][18]
+			)
+		}
+		}
+	  }, false)
+	  .then((res) => {
+		setConnectionState('btn-success btn-disabled')
+		console.log('listen serialport: ', res);
+	  })
+	  .catch((err) => {
+		setConnectionState('btn-error')
+		console.error(err);
+	  });
   }
   function cancelRead() {
-    serialport
-      .cancelRead()
-      .then((res) => {
-        console.log('cancel read: ', res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+	serialport
+	  .cancelRead()
+	  .then((res) => {
+		console.log('cancel read: ', res);
+	  })
+	  .catch((err) => {
+		console.error(err);
+	  });
    }
   
 
   if (live){
-    return(
-    <div className='h-screen w-screen flex flex-col'>
+	return(
+	<div className='h-screen w-screen flex flex-col'>
 
-      <div className='flex w-full flex-1 p-2'>
+	  <div className='flex w-full flex-1 p-2'>
 
-        <div className='flex-1 flex flex-col'>
+		<div className='flex-1 flex flex-col'>
 
-          <Map></Map>
+		  <Map
+			 longitudesArray={longitudesArray}
+			 latitudesArray={latitudesArray}
+		  ></Map>
 
-          <Console  information={information}></Console> 
+		  <Console  information={information}></Console> 
   
-        </div>
+		</div>
 
-        <div className="divider divider-horizontal"></div>
+		<div className="divider divider-horizontal"></div>
 
-        <div className='flex flex-col flex-1'>
+		<div className='flex flex-col flex-1'>
 
-          <Graphs 
-              setliveData={setliveData}
-              times_data={timesArray}
-              altitudes_data={AltitudesArray}
-              setInformation={setInformation}
-              ></Graphs>
+		  <Graphs 
+			  setliveData={setliveData}
+			  times_data={timesArray}
+			  altitudes_data={AltitudesArray}
+			  setInformation={setInformation}
+			  ></Graphs>
 
-          <div className='flex flex-1'>
+		  <div className='flex flex-1'>
 
-            <Controls 
-            connectionState={connectionState} 
-            openSerialport={openSerialport} 
-            setCOMPort={setCOMPort} 
-            COMPort={COMPort}
-            setInformation={setInformation}
-            setfilepath={setfilepath}
-            filepath={filepath}
-            ></Controls>
+			<Controls 
+			connectionState={connectionState} 
+			openSerialport={openSerialport} 
+			setCOMPort={setCOMPort} 
+			COMPort={COMPort}
+			setInformation={setInformation}
+			setfilepath={setfilepath}
+			filepath={filepath}
+			></Controls>
 
-            <div className="divider divider-horizontal mt-[16px]"></div>
+			<div className="divider divider-horizontal mt-[16px]"></div>
 
-            <Telemetry
-              altitudes_array={AltitudesArray}
-              satellites={satellitesArray}
-              rssi={rssiArray}
-              snr={snrArray}
-              pressure={PressuresArray}
-            ></Telemetry>
+			<Telemetry
+			  altitudes_array={AltitudesArray}
+			  satellites={satellitesArray}
+			  rssi={rssiArray}
+			  snr={snrArray}
+			  pressure={PressuresArray}
+		  Accel_ZArray={Accel_ZArray}
+		  longitudesArray={longitudesArray}
+			  latitudesArray={latitudesArray}
+			  //altitudes_gpsArray={altitudes_gpsArray}
+			></Telemetry>
 
-          </div>
+					
 
-        </div>
+			 </div>
 
-      </div>
+		</div>
 
-      <Timeline></Timeline>
+	  </div>
 
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+	  <Timeline></Timeline>
 
-    </div>
+	  <ToastContainer
+		position="bottom-left"
+		autoClose={5000}
+		hideProgressBar={false}
+		newestOnTop={false}
+		closeOnClick
+		rtl={false}
+		pauseOnFocusLoss
+		draggable
+		pauseOnHover
+		theme="dark"
+	  />
+
+	</div>
   );
 } else { 
   return(
-    <Database
-    setInformation={setInformation} 
-    setliveData={setliveData} 
+	<Database
+	setInformation={setInformation} 
+	setliveData={setliveData} 
    >   
-    </Database>
+	</Database>
   ); 
 }
 }
-////////////////     4/17/24     //////////////////////////////
+////////////////	 4/17/24	 //////////////////////////////
 //function CLOCK() {
 //  const [time, setTime] = useState('');
 //  
 //  useEffect(() => {
-//    const updateClock = async () => {
-//      //Listen for messages from Rust
-//      await listen('tauri:updateTime', (event) => {
-//        // Update state with recieved time
-//        setTime(event.payload);
-//      });
-//    };
+//	const updateClock = async () => {
+//	  //Listen for messages from Rust
+//	  await listen('tauri:updateTime', (event) => {
+//		// Update state with recieved time
+//		setTime(event.payload);
+//	  });
+//	};
 //  }, []);
 //
 //  return (
-//    <div>
+//	<div>
 //
-////////////////     4/17/24     //////////////////////////////
+////////////////	 4/17/24	 //////////////////////////////
   
    
-    
+	
 export default App;
