@@ -2,6 +2,4 @@ node_modules
 public
 
 
-4/17/24
-Tried implementing clock feature by creating the clock.rs file along with 
-functions in the main.rs and app.js files
+
