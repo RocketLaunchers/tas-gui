@@ -96,7 +96,7 @@ const Telemetry = ({altitudes_array, satellites, rssi, snr, pressure, Accel_ZArr
 			<div className="divider uppercase">Logged Times</div>
 			{loggedTimes.length > 0 ? (
 				<ul className='font-mono'>
-					{loggedTimes.map((time, index) => (
+					{loggedTimes.slice(-3).map((time, index) => (
 						<li key={index}>Time logged: {formatTime(time)}</li>
 					))}
 				</ul>
