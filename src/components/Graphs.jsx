@@ -58,15 +58,21 @@ function getRandomInt(max, min) {
 
 const Graphs = ({setliveData, times_data, altitudes_data, setInformation}) => {
 const [activeTab, setActiveTab] = useState('Live');
-const labels = times_data;
+
+const pointstoPlot = 12;
+
 let data
-if (altitudes_data != undefined){
+if (altitudes_data && times_data){
+
+  const recentAltitudes = altitudes_data.slice(-pointstoPlot);
+  const recentTimes = times_data.slice(-pointstoPlot);
+
  data = {
-  labels,
+  labels: recentTimes,
   datasets: [
     {
       label: 'BAR_Altitude',
-      data: labels.map((label, index) => altitudes_data[index]),
+      data: recentAltitudes,
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgb(255, 99, 132, 0.5)',
     },
