@@ -56,3 +56,4 @@ React.js, Rust, Tailwind
 - [@LoneCuriosity](https://www.github.com/LoneCuriosity)
 - [@HECTOR-SO](https://github.com/HECTOR-SO)
 - [@JofredG](https://github.com/JofredG)
+- [@andrewalvrz](https://github.com/andrewalvrz)
