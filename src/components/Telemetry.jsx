@@ -24,19 +24,20 @@ const Telemetry = ({ altitudes_array, satellites, rssi, snr, pressure, Accel_xAr
         const adjustedAccel_y = Accel_x * Math.sin(roll) + Accel_y * Math.cos(pitch);
         const adjustedAccel_z = Accel_z;
 
-        return Math.sqrt(
-            adjustedAccel_x ** 2 +
-            adjustedAccel_y ** 2 +
-            adjustedAccel_z ** 2
-        ).toFixed(2);
+        const accelMeanSqrt = Math.sqrt(
+            adjustedAccel_x **2 +
+            adjustedAccel_y **2 +
+            adjustedAccel_z **2
+        ) /10 ;
+	return accelMeanSqrt.toFixed(2)
     };
 
     useEffect(() => {
-        const currentAcceleration = parseFloat(calculateAdjustedAcceleration());
+        const currentAcceleration = parseFloat(calculateAdjustedAcceleration()) ;
 
-        const takeoffThreshold = 10.2;
-        const gravityLowerBound = 9.6; // Lower bound for gravity range
-        const gravityUpperBound = 9.89; // Upper bound for gravity range
+        const takeoffThreshold = 1.00;
+        const gravityLowerBound = 0.95; // Lower bound for gravity range
+        const gravityUpperBound = 0.99; // Upper bound for gravity range
         const stabilityDuration = 5000; // 5 seconds
 
         // Check if we are within the gravity range
