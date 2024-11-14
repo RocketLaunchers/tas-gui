@@ -1,4 +1,4 @@
-const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath}) => {
+const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath,cancelRead}) => {
   function setPort (setCOMPort, COMPort) {
   console.log('old port')
   console.log(COMPort)
@@ -46,8 +46,8 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
             <button className="btn btn-outline btn-warning uppercase">reset clock</button>
           </div>
         </div>
-        <button className="btn btn-outline btn-error uppercase">shutdown</button>
-        <button className={"btn btn-outline uppercase " + connectionState} onClick={openSerialport}>connect</button>
+        <button className={"btn btn-outline btn-error uppercase"} onClick={cancelRead}>shutdown</button>
+        <button className={"btn btn-outline btn-success uppercase "} onClick={openSerialport}>connect</button>
       </div>
     </div>
   );
