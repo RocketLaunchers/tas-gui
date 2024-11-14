@@ -309,6 +309,7 @@ function App() {
 			setInformation={setInformation}
 			setfilepath={setfilepath}
 			filepath={filepath}
+                        cancelRead={cancelRead}
 			></Controls>
 
 			<div className="divider divider-horizontal mt-[16px]"></div>
@@ -323,6 +324,11 @@ function App() {
 		  longitudesArray={longitudesArray}
 			  latitudesArray={latitudesArray}
 			  //altitudes_gpsArray={altitudes_gpsArray}
+                          gxArray={gxArray}
+                          gyArray={gyArray}
+                          gzArray={gzArray}
+                          Accel_xArray={Accel_xArray}
+                          Accel_yArray={Accel_yArray}
 			></Telemetry>
 
 					
