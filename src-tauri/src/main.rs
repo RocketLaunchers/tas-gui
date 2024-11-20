@@ -5,13 +5,11 @@
 
 extern crate rusqlite;
 use rusqlite::{Connection, Result};
-//mod clock;
+use std::fs::File;
+use std::io::prelude::*;
 
 #[tauri::command]
 fn create_file(data: String, file: String) {
-    use std::fs::File;
-    use std::io::prelude::*;
-
     let pathname = format!("C:{}", file);
     let mut file = File::options().append(true).write(true).create(true).open(pathname).unwrap();
     
@@ -27,8 +25,8 @@ fn load_database_integer_database(column: String, database_name: String) -> Resu
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
     
-    // Querying the flightData table for the specified column
-    let mut stmt = match conn.prepare(&format!("SELECT {} FROM flightData", column_name)) {
+    // Querying the flightData table for the specified column with DISTINCT to eliminate duplicates
+    let mut stmt = match conn.prepare(&format!("SELECT DISTINCT {} FROM flightData", column_name)) {
         Ok(stmt) => stmt,
         Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
     };
@@ -63,7 +61,7 @@ fn load_database_string_database(column: String, database_name: String) -> Resul
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
     
-    let mut stmt = match conn.prepare(&format!("SELECT {} FROM flightData", column_name)) {
+    let mut stmt = match conn.prepare(&format!("SELECT DISTINCT {} FROM flightData", column_name)) {
         Ok(stmt) => stmt,
         Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
     };
@@ -98,7 +96,7 @@ fn load_database_float_database(column: String, database_name: String) -> Result
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
     
-    let mut stmt = match conn.prepare(&format!("SELECT {} FROM flightData", column_name)) {
+    let mut stmt = match conn.prepare(&format!("SELECT DISTINCT {} FROM flightData", column_name)) {
         Ok(stmt) => stmt,
         Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
     };
