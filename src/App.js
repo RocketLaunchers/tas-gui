@@ -121,6 +121,7 @@ function App() {
 	//console.log('altitudes' + AltitudesArray);
 	console.log('times' + timesArray);
   }, AltitudesArray)
+
   function parseMessage(inputString){
 	const pattern = /Message: \[(\d{4})\/(\d{1,2})\/(\d{1,2}) \((\w+)\) (\d{2}:\d{2}:\d{2})\] (-?\d+\.\d+)/;  
 	const match = inputString.match(pattern);
@@ -142,6 +143,7 @@ function App() {
 	  //console.log('this is times array' + timesArray);
 	}
   }
+  
  let years = [];
  let months = [];
  let days = [];
@@ -269,7 +271,7 @@ function App() {
 		console.error(err);
 	  });
    }
-  
+ 
 
   if (live){
 	return(
@@ -284,7 +286,15 @@ function App() {
 			 latitudesArray={latitudesArray}
 		  ></Map>
 
-		  <Console  information={information}></Console> 
+		  <Console  
+		  information={information}
+		   Accel_ZArray={Accel_ZArray}   
+		   Accel_xArray={Accel_xArray}   
+		   Accel_yArray={Accel_yArray}      
+		   gxArray={gxArray}
+		   gyArray={gyArray}
+		   gzArray={gzArray}
+		></Console> 
   
 		</div>
 
