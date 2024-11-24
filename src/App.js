@@ -49,6 +49,7 @@ function App() {
   const [snrArray, setsnrArray] = useState([]);
   const [filepath, setfilepath] =useState();
   const [rawData, setRawData] =useState([]);
+   const [apogee, setApogee] = useState(null);
  
   const [live, setliveData] = useState(true);
   
@@ -301,6 +302,8 @@ function App() {
 		   gyArray={gyArray}
 		   gzArray={gzArray}
 		   rawData={rawData}
+		   altitudes_gpsArray={altitudes_gpsArray}
+		   apogee={apogee}
 		></Console> 
 
 		  
@@ -342,12 +345,13 @@ function App() {
 		  Accel_ZArray={Accel_ZArray}
 		  longitudesArray={longitudesArray}
 			  latitudesArray={latitudesArray}
-			  //altitudes_gpsArray={altitudes_gpsArray}
+			  altitudes_gpsArray={altitudes_gpsArray}
                           gxArray={gxArray}
                           gyArray={gyArray}
                           gzArray={gzArray}
                           Accel_xArray={Accel_xArray}
                           Accel_yArray={Accel_yArray}
+						  setApogee={setApogee}
 						  
 			></Telemetry>
 
