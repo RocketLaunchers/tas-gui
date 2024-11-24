@@ -16,7 +16,7 @@
     "react-leaflet": "^4.2.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.1.1",
-    "sharp": "^0.33.4",
+    "sharp": "^0.31.3",
     "tauri": "^0.15.0",
     "tauri-plugin-serialport-api": "github:lzhida/tauri-plugin-serialport#v0.0.7"
   },
