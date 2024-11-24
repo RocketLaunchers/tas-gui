@@ -14,6 +14,8 @@ const Telemetry = ({
     gzArray,
     longitudesArray,
     latitudesArray,
+    setApogee,
+    altitudes_gpsArray
 }) => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isCounting, setIsCounting] = useState(false);
@@ -54,7 +56,29 @@ const Telemetry = ({
         const current = array[array.length - 1];
         const previous = array[array.length - 2];
         return (current - previous).toFixed(2);
+    
     };
+
+
+    const calculateApogee = () => {
+        if (altitudes_gpsArray.length < 3) return;
+
+        const currentAltitude = altitudes_gpsArray[altitudes_gpsArray.length - 1];
+        const previousAltitude = altitudes_gpsArray[altitudes_gpsArray - 2];
+        const beforePreviousAltitude = altitudes_gpsArray[altitudes_gpsArray - 3];
+
+        if (
+            previousAltitude > beforePreviousAltitude &&
+            previousAltitude > currentAltitude
+        ) {
+            console.log("Apogee detected at altitude:", previousAltitude);
+            setApogee(previousAltitude); // Update apogee in App.js
+        }
+    };
+
+    useEffect(() => {
+        calculateApogee();
+    }, [altitudes_gpsArray]);
 
     useEffect(() => {
         const currentAcceleration = parseFloat(calculateAdjustedAcceleration());
