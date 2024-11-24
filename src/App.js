@@ -48,6 +48,7 @@ function App() {
   const [rssiArray, setrssiArray] = useState([]);
   const [snrArray, setsnrArray] = useState([]);
   const [filepath, setfilepath] =useState();
+  const [rawData, setRawData] =useState([]);
  
   const [live, setliveData] = useState(true);
 
@@ -226,6 +227,9 @@ function App() {
 			console.log(pack[0])
 			console.log('this is pack[0][0]')
 			console.log(pack[0][0])
+
+			//test for rawdata to console 
+			setRawData((prevRawData) => [...prevRawData, pack]);
 			setsnrArray( prevsnr => [...prevsnr, pack[2][0]])
 			setrssiArray(prevrssi => [...prevrssi, pack[1][0]])
 			parsePack(
@@ -295,6 +299,7 @@ function App() {
 		   gxArray={gxArray}
 		   gyArray={gyArray}
 		   gzArray={gzArray}
+		   rawData={rawData}
 		></Console> 
 
 		  
@@ -342,6 +347,7 @@ function App() {
                           gzArray={gzArray}
                           Accel_xArray={Accel_xArray}
                           Accel_yArray={Accel_yArray}
+						  
 			></Telemetry>
 
 					
