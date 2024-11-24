@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const Telemetry = ({ altitudes_array, satellites, rssi, snr, pressure, Accel_xArray, Accel_yArray, Accel_ZArray, gxArray, gyArray, gzArray, longitudesArray, latitudesArray }) => {
+const Telemetry = ({ altitudes_array, satellites, rssi, snr, pressure, Accel_xArray, Accel_yArray, Accel_ZArray, gxArray, gyArray, gzArray, longitudesArray, latitudesArray,}) => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isCounting, setIsCounting] = useState(false);
     const [loggedTimes, setLoggedTimes] = useState([]);
@@ -122,9 +122,9 @@ const Telemetry = ({ altitudes_array, satellites, rssi, snr, pressure, Accel_xAr
             <div className="divider uppercase">Telemetry</div>
             <div className='flex'>
                 <div className='flex flex-col'>
-                    <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length - 1]}</p>
-                    <p className='font-mono text-md'>RSSI: {rssi[rssi.length - 1]} dBm</p>
-                    <p className='font-mono text-md'>SNR: {snr[snr.length - 1]} dBm</p>
+                    <p className='font-mono text-md'>Altitude: {altitudes_array[altitudes_array.length - 1]} m</p>
+                    <p className='font-mono text-md'>RSSI: {rssi[rssi.length - 1]} </p>
+                    <p className='font-mono text-md'>SNR: {snr[snr.length - 1]} </p>
                     <p className='font-mono text-md'>TLM Δ: 0.4 sec</p>
                     <p className='font-mono text-md'>GPS Sats: {satellites[satellites.length - 1]}</p>
                     <p className='font-mono text-md'>BME Pres: {pressure[pressure.length - 1]} bar</p>
