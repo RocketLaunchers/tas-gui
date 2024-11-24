@@ -286,7 +286,8 @@ function App() {
 			 latitudesArray={latitudesArray}
 		  ></Map>
 
-		  <Console  
+
+		  <Console
 		  information={information}
 		   Accel_ZArray={Accel_ZArray}   
 		   Accel_xArray={Accel_xArray}   
@@ -295,6 +296,8 @@ function App() {
 		   gyArray={gyArray}
 		   gzArray={gzArray}
 		></Console> 
+
+		  
   
 		</div>
 
