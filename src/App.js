@@ -20,7 +20,7 @@ function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
   const [serialport, setSerialport] = useState(() => new Serialport({ path:`${COMPort}`, baudRate: 115200 }))
-  const [information, setInformation] = useState('right');
+  const [information, setInformation] = useState('Welcome Rocket Launchers!, Lets Have A Great Launch!'); 
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
@@ -51,6 +51,7 @@ function App() {
   const [rawData, setRawData] =useState([]);
  
   const [live, setliveData] = useState(true);
+  
 
   useEffect(() => {
 	
