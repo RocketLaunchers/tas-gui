@@ -20,7 +20,7 @@ function App() {
   const [connectionState, setConnectionState] = useState('btn-warning');
   const [packets, setPackets] = useState([])
   const [serialport, setSerialport] = useState(() => new Serialport({ path:`${COMPort}`, baudRate: 115200 }))
-  const [information, setInformation] = useState('right');
+  const [information, setInformation] = useState('Welcome Rocket Launchers!, Lets Have A Great Launch!'); 
   const [yearArray, setYearArray] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
   const [daysArray, setDaysArray] = useState([]);
@@ -48,8 +48,11 @@ function App() {
   const [rssiArray, setrssiArray] = useState([]);
   const [snrArray, setsnrArray] = useState([]);
   const [filepath, setfilepath] =useState();
+  const [rawData, setRawData] =useState([]);
+   const [apogee, setApogee] = useState(null);
  
   const [live, setliveData] = useState(true);
+  
 
   useEffect(() => {
 	
@@ -121,6 +124,7 @@ function App() {
 	//console.log('altitudes' + AltitudesArray);
 	console.log('times' + timesArray);
   }, AltitudesArray)
+
   function parseMessage(inputString){
 	const pattern = /Message: \[(\d{4})\/(\d{1,2})\/(\d{1,2}) \((\w+)\) (\d{2}:\d{2}:\d{2})\] (-?\d+\.\d+)/;  
 	const match = inputString.match(pattern);
@@ -142,6 +146,7 @@ function App() {
 	  //console.log('this is times array' + timesArray);
 	}
   }
+  
  let years = [];
  let months = [];
  let days = [];
@@ -224,6 +229,9 @@ function App() {
 			console.log(pack[0])
 			console.log('this is pack[0][0]')
 			console.log(pack[0][0])
+
+			//test for rawdata to console 
+			setRawData((prevRawData) => [...prevRawData, pack]);
 			setsnrArray( prevsnr => [...prevsnr, pack[2][0]])
 			setrssiArray(prevrssi => [...prevrssi, pack[1][0]])
 			parsePack(
@@ -269,7 +277,7 @@ function App() {
 		console.error(err);
 	  });
    }
-  
+ 
 
   if (live){
 	return(
@@ -284,7 +292,21 @@ function App() {
 			 latitudesArray={latitudesArray}
 		  ></Map>
 
-		  <Console  information={information}></Console> 
+
+		  <Console
+		  information={information}
+		   Accel_ZArray={Accel_ZArray}   
+		   Accel_xArray={Accel_xArray}   
+		   Accel_yArray={Accel_yArray}      
+		   gxArray={gxArray}
+		   gyArray={gyArray}
+		   gzArray={gzArray}
+		   rawData={rawData}
+		   altitudes_gpsArray={altitudes_gpsArray}
+		   apogee={apogee}
+		></Console> 
+
+		  
   
 		</div>
 
@@ -323,12 +345,14 @@ function App() {
 		  Accel_ZArray={Accel_ZArray}
 		  longitudesArray={longitudesArray}
 			  latitudesArray={latitudesArray}
-			  //altitudes_gpsArray={altitudes_gpsArray}
+			  altitudes_gpsArray={altitudes_gpsArray}
                           gxArray={gxArray}
                           gyArray={gyArray}
                           gzArray={gzArray}
                           Accel_xArray={Accel_xArray}
                           Accel_yArray={Accel_yArray}
+						  setApogee={setApogee}
+						  
 			></Telemetry>
 
 					
