@@ -11,7 +11,6 @@ const Console = ({
     gzArray,
     rawData,
     altitudes_gpsArray,
-    
 }) => {
     const [activeTab, setActiveTab] = useState('console');
     const [calculatedOrientation, setCalculatedOrientation] = useState({
@@ -22,11 +21,9 @@ const Console = ({
     const [apogee, setApogee] = useState(null);
     const [eventLog, setEventLog] = useState([]);
 
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-    };
+    const handleTabChange = (tab) => setActiveTab(tab);
 
-    // Calculate orientation whenever accelerometer and gyroscope arrays update
+    // Calculate orientation
     useEffect(() => {
         if (
             Accel_ZArray.length &&
@@ -36,32 +33,27 @@ const Console = ({
             gyArray.length &&
             gzArray.length
         ) {
-            const ax = Accel_xArray[Accel_xArray.length - 1];
-            const ay = Accel_yArray[Accel_yArray.length - 1];
-            const az = Accel_ZArray[Accel_ZArray.length - 1];
-            const gx = gxArray[gxArray.length - 1];
-            const gy = gyArray[gyArray.length - 1];
-            const gz = gzArray[gzArray.length - 1];
+            const ax = Accel_xArray.at(-1);
+            const ay = Accel_yArray.at(-1);
+            const az = Accel_ZArray.at(-1);
+            const gx = gxArray.at(-1);
+            const gy = gyArray.at(-1);
+            const gz = gzArray.at(-1);
 
-            // Calculate pitch and roll angles from accelerometer data
-            const pitch =
-                Math.atan2(ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
-            const roll =
-                Math.atan2(ay, Math.sqrt(ax * ax + az * az)) * (180 / Math.PI);
-            const yaw = gz; // Use Z-axis gyroscope as a proxy for yaw angle
+            const pitch = Math.atan2(ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
+            const roll = Math.atan2(ay, Math.sqrt(ax * ax + az * az)) * (180 / Math.PI);
+            const yaw = gz; // Simplified yaw calculation for demonstration
 
-            setCalculatedOrientation({ pitch, roll, yaw }); // Update orientation state
+            setCalculatedOrientation({ pitch, roll, yaw });
         }
     }, [Accel_ZArray, Accel_xArray, Accel_yArray, gxArray, gyArray, gzArray]);
 
-    // Apogee detection logic and event logging
+    // Detect apogee and log events
     useEffect(() => {
         if (altitudes_gpsArray.length > 1) {
-            const currentAltitude = altitudes_gpsArray[altitudes_gpsArray.length - 1];
-            const previousAltitude =
-                altitudes_gpsArray[altitudes_gpsArray.length - 2];
+            const currentAltitude = altitudes_gpsArray.at(-1);
+            const previousAltitude = altitudes_gpsArray.at(-2);
 
-            // If the altitude is decreasing after increasing, it's the apogee
             if (previousAltitude > currentAltitude && apogee === null) {
                 setApogee(previousAltitude);
                 const timestamp = new Date().toLocaleString();
@@ -77,18 +69,14 @@ const Console = ({
         }
     }, [altitudes_gpsArray, apogee]);
 
-    // Renders a rocket visualization with orientation applied
-    const renderRocket = (orientation) => {
-        const { pitch, roll, yaw } = orientation;
-
-        // Style for rocket transformation based on pitch, roll, and yaw
+    // Render rocket visualization
+    const renderRocket = ({ pitch, roll, yaw }) => {
         const rocketStyle = {
             transform: `rotateX(${pitch}deg) rotateY(${roll}deg) rotateZ(${yaw}deg)`,
-            transition: 'transform 0.3s ease', // Smooth transition for orientation changes
+            transition: 'transform 0.3s ease',
             width: '100px',
             height: '200px',
             margin: '0 auto',
-            position: 'relative',
         };
 
         return (
@@ -102,79 +90,53 @@ const Console = ({
         );
     };
 
-    // Extracts and formats the most recent raw data packets
+    // Format recent raw data
     const getRecentRawData = () => {
-        if (rawData && rawData.length > 0) {
-            const formattedPackets = rawData
-                .slice(-1) // Get the last packet
-                .map((packet) => JSON.stringify(packet, null, 2)) // Format each packet with proper indentation
-                .join('\n'); // Combine packets with line breaks
-            return formattedPackets;
+        if (rawData?.length > 0) {
+            return rawData
+                .slice(-1)
+                .map((packet) => JSON.stringify(packet, null, 2))
+                .join('\n');
         }
-        return 'No raw data available.'; // Fallback if no raw data is present
+        return 'No raw data available.';
     };
 
     return (
         <div className="flex flex-col flex-1">
-            {/* Tab navigation */}
+            {/* Tabs */}
             <div className="tabs">
-                <button
-                    className={`tab ${
-                        activeTab === 'console' ? 'tab-active' : ''
-                    }`}
-                    onClick={() => handleTabChange('console')}
-                >
-                    Console
-                </button>
-                <button
-                    className={`tab ${
-                        activeTab === 'rocket' ? 'tab-active' : ''
-                    }`}
-                    onClick={() => handleTabChange('rocket')}
-                >
-                    Rocket
-                </button>
-                <button
-                    className={`tab ${
-                        activeTab === 'rawData' ? 'tab-active' : ''
-                    }`}
-                    onClick={() => handleTabChange('rawData')}
-                >
-                    Raw Data
-                </button>
-                <button
-                    className={`tab ${
-                        activeTab === 'events' ? 'tab-active' : ''
-                    }`}
-                    onClick={() => handleTabChange('events')}
-                >
-                    Events
-                </button>
+                {['console', 'rocket', 'rawData', 'events'].map((tab) => (
+                    <button
+                        key={tab}
+                        className={`tab ${activeTab === tab ? 'tab-active' : ''}`}
+                        onClick={() => handleTabChange(tab)}
+                    >
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                ))}
             </div>
 
-            {/* Console tab content */}
+            {/* Console Tab */}
             {activeTab === 'console' && (
                 <div className="console-tab">
                     <div className="divider uppercase">Console</div>
                     <textarea
                         className="textarea textarea-bordered w-full h-52 text-sm resize-none"
                         readOnly
-                        value={information}
+                        value={information || 'No information available.'}
                     ></textarea>
                 </div>
             )}
 
-            {/* Rocket visualization tab content */}
+            {/* Rocket Visualization */}
             {activeTab === 'rocket' && (
                 <div className="rocket-tab">
                     <div className="divider uppercase">Rocket Orientation</div>
-                    <div className="rocket-container">
-                        {renderRocket(calculatedOrientation)}
-                    </div>
+                    <div className="rocket-container">{renderRocket(calculatedOrientation)}</div>
                 </div>
             )}
 
-            {/* Raw data tab content */}
+            {/* Raw Data Tab */}
             {activeTab === 'rawData' && (
                 <div className="raw-data-tab">
                     <div className="divider uppercase">Raw Data</div>
@@ -186,21 +148,26 @@ const Console = ({
                 </div>
             )}
 
-            {/* Events tab content */}
+            {/* Events Tab */}
             {activeTab === 'events' && (
-    <div className="events-tab">
-        <div className="divider uppercase">Events</div>
-        <textarea
-            className="textarea textarea-bordered w-full h-72 text-sm resize-none"
-            readOnly
-            value={
-                apogee !== null
-                    ? `Apogee Altitude: ${apogee} meters`
-                    : 'No apogee detected yet.'
-            }
-        ></textarea>
-    </div>
-)}
+                <div className="events-tab">
+                    <div className="divider uppercase">Events</div>
+                    <textarea
+                        className="textarea textarea-bordered w-full h-72 text-sm resize-none"
+                        readOnly
+                        value={
+                            eventLog.length
+                                ? eventLog
+                                      .map(
+                                          (log) =>
+                                              `${log.time}: ${log.event} at ${log.altitude} meters.`
+                                      )
+                                      .join('\n')
+                                : 'No events logged yet.'
+                        }
+                    ></textarea>
+                </div>
+            )}
         </div>
     );
 };
