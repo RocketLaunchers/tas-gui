@@ -68,6 +68,21 @@ const Databases = ({setInformation, setliveData}) => {
   const [makedbScreen, setmakedbScreen] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
   const [newDatabaseName, setNewDatabaseName] = useState("");
+  const [databases, setDatabases] = useState([]);
+  const [selectedDatabase, setSelectedDatabase] = useState("");
+  const [yearSelect, setyearSelect] = useState('2022-2023');
+
+  useEffect(() => {
+    async function fetchDatabases() {
+      try {
+        const dbList = await invoke('list_databases');
+        setDatabases(dbList);
+      } catch (error) {
+        setInformation(`Failed to list databases: ${error}`);
+      }
+    }
+    fetchDatabases();
+  }, []);
 
   async function createNewDatabase() {
     if (newDatabaseName) {
@@ -76,12 +91,24 @@ const Databases = ({setInformation, setliveData}) => {
         setInformation(`Database '${newDatabaseName}' created successfully.`);
         setShowPrompt(false);
         setNewDatabaseName("");
+        const dbList = await invoke('list_databases');
+        setDatabases(dbList);
       } catch (error) {
         setInformation(`Failed to create database: ${error}`);
       }
     } else {
       setInformation("Database creation canceled.");
       setShowPrompt(false);
+    }
+  }
+
+  async function selectDatabase(databaseName) {
+    try {
+      await invoke('select_database', { databaseName });
+      setSelectedDatabase(databaseName);
+      setInformation(`Database '${databaseName}' selected.`);
+    } catch (error) {
+      setInformation(`Failed to select database: ${error}`);
     }
   }
 
@@ -231,7 +258,6 @@ const handleTabClick = (tab) => {
 //   setliveData((prevLive)=>!prevLive);
 // },[activeTab])
 
-const [yearSelect, setyearSelect] = useState('2022-2023');
 const yearPicker = (e) =>{
   setyearSelect(e.target.value);
   setloadYear(e.target.value);
@@ -252,14 +278,15 @@ return (
     <div className='flex flex-col flex-1'>
      
       <div className='flex-column'>
-           <button className={"btn btn-outline btn-error uppercase"} onClick={()=>{readAllData(loadYear)}}>Load:{`${yearSelect}`}</button>
+           <button className={"btn btn-outline btn-error uppercase"} onClick={()=>{readAllData(yearSelect)}}>Load:{`${yearSelect}`}</button>
            <button className={'btn btn-outline btn-error uppercase'} onClick={() => setShowPrompt(true)}> New Database</button>
            <div>
               <label>
                   Select Database 
                   <select value={yearSelect} onChange={yearPicker}>
-                      <option value="2022-2023">2022-2023</option>
-                      <option value="2023-2024">2023-2024</option>
+                    {databases.map((db) => (
+                      <option key={db} value={db}>{db}</option>
+                    ))}
                   </select>
               </label>
            </div>

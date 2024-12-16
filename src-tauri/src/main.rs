@@ -7,7 +7,7 @@ mod file_operations;
 mod database_operations;
 
 use file_operations::create_file;
-use database_operations::{load_database_integer_database, load_database_string_database, load_database_float_database, start_replay, create_new_database, select_database};
+use database_operations::{load_database_integer_database, load_database_string_database, load_database_float_database, start_replay, create_new_database, list_databases};
 
 fn main() {
     let context = tauri::generate_context!();
@@ -25,7 +25,7 @@ fn main() {
             load_database_float_database,
             start_replay,
             create_new_database,
-            select_database
+            list_databases
         ])
         .plugin(tauri_plugin_serialport::init())
         .run(context)

@@ -3,6 +3,7 @@ use rusqlite::{Connection, Result};
 use tauri::Window;
 use std::thread;
 use std::time::Duration;
+use std::fs;
 
 #[tauri::command]
 pub fn load_database_integer_database(column: String, database_name: String) -> Result<Vec<i32>, String> {
@@ -155,11 +156,20 @@ pub fn create_new_database(database_name: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn select_database(database_name: String) -> Result<String, String> {
-    let conn = match Connection::open(format!("{}.db", database_name)) {
-        Ok(_) => Ok(database_name),
-        Err(err) => Err(format!("Error selecting database: {}", err.to_string())),
-    };
-
-    conn
+pub fn list_databases() -> Result<Vec<String>, String> {
+    let paths = fs::read_dir(".").map_err(|err| format!("Error reading directory: {}", err.to_string()))?;
+    let mut databases = Vec::new();
+    for path in paths {
+        let path = path.map_err(|err| format!("Error reading path: {}", err.to_string()))?;
+        if let Some(extension) = path.path().extension() {
+            if extension == "db" {
+                if let Some(file_name) = path.path().file_name() {
+                    if let Some(file_name_str) = file_name.to_str() {
+                        databases.push(file_name_str.to_string());
+                    }
+                }
+            }
+        }
+    }
+    Ok(databases)
 }
