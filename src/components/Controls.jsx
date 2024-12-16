@@ -1,6 +1,23 @@
+import { useEffect, useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 
 const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath, cancelRead}) => {
+  const [databases, setDatabases] = useState([]);
+  const [selectedDatabase, setSelectedDatabase] = useState("");
+  const [recordDatabase, setRecordDatabase] = useState("");
+
+  useEffect(() => {
+    async function fetchDatabases() {
+      try {
+        const dbList = await invoke('list_databases');
+        setDatabases(dbList);
+      } catch (error) {
+        setInformation(`Failed to list databases: ${error}`);
+      }
+    }
+    fetchDatabases();
+  }, []);
+
   function setPort (setCOMPort, COMPort) {
     console.log('old port')
     console.log(COMPort)
@@ -17,13 +34,26 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
   }
 
   function replayFromFile() {
-    invoke('start_replay')
-      .then(() => {
-        setInformation('Replaying data from file...');
-      })
-      .catch((err) => {
-        setInformation(`Failed to replay data: ${err}`);
-      });
+    if (selectedDatabase) {
+      invoke('start_replay', { databaseName: selectedDatabase })
+        .then(() => {
+          setInformation(`Replaying data from database '${selectedDatabase}'...`);
+        })
+        .catch((err) => {
+          setInformation(`Failed to replay data: ${err}`);
+        });
+    } else {
+      setInformation("Please select a database to replay.");
+    }
+  }
+
+  function recordToFile() {
+    if (recordDatabase) {
+      // Placeholder for the record functionality
+      setInformation(`Recording data to database '${recordDatabase}'...`);
+    } else {
+      setInformation("Please select a database to record.");
+    }
   }
 
   return (
@@ -52,16 +82,31 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
         </div>
         <div className='flex gap-2'>
           <div className='flex flex-col gap-2 flex-1'>
-            <button className="btn btn-outline btn-info uppercase" onClick={replayFromFile}>replay from file</button>
             <button className="btn btn-outline btn-warning uppercase">flush memory</button>
-          </div>
-          <div className='flex flex-col gap-2 flex-1'>
             <button className="btn btn-outline btn-warning uppercase">mpu reset</button>
             <button className="btn btn-outline btn-warning uppercase">reset clock</button>
+            <div className="input-group w-full">
+              <select value={selectedDatabase} onChange={(e) => setSelectedDatabase(e.target.value)} className="input input-bordered uppercase w-1/2">
+                <option value="" disabled>Select Database</option>
+                {databases.map((db) => (
+                  <option key={db} value={db}>{db}</option>
+                ))}
+              </select>
+              <button className="btn btn-outline btn-info uppercase w-1/2" onClick={replayFromFile}>replay from file</button>
+            </div>
+            <div className="input-group w-full">
+              <select value={recordDatabase} onChange={(e) => setRecordDatabase(e.target.value)} className="input input-bordered uppercase w-1/2">
+                <option value="" disabled>Select Database</option>
+                {databases.map((db) => (
+                  <option key={db} value={db}>{db}</option>
+                ))}
+              </select>
+              <button className="btn btn-outline btn-error uppercase w-1/2" onClick={recordToFile}>record</button>
+            </div>
           </div>
         </div>
-        <button className={"btn btn-outline btn-error uppercase"} onClick={cancelRead}>shutdown</button>
-        <button className={"btn btn-outline btn-success uppercase "} onClick={openSerialport}>connect</button>
+        <button className={"btn btn-outline btn-error uppercase w-full"} onClick={cancelRead}>shutdown</button>
+        <button className={"btn btn-outline btn-success uppercase w-full"} onClick={openSerialport}>connect</button>
       </div>
     </div>
   );

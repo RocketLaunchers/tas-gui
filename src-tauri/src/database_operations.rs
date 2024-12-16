@@ -7,9 +7,15 @@ use std::fs;
 
 #[tauri::command]
 pub fn load_database_integer_database(column: String, database_name: String) -> Result<Vec<i32>, String> {
+    let db_path = if database_name.ends_with(".db") {
+        database_name
+    } else {
+        format!("{}.db", database_name)
+    };
+
     let mut integer_vector = Vec::new();
     let column_name: &str = &column;
-    let conn = match Connection::open(format!("{}.db", database_name)) {
+    let conn = match Connection::open(&db_path) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
@@ -41,9 +47,15 @@ pub fn load_database_integer_database(column: String, database_name: String) -> 
 
 #[tauri::command]
 pub fn load_database_string_database(column: String, database_name: String) -> Result<Vec<String>, String> {
+    let db_path = if database_name.ends_with(".db") {
+        database_name
+    } else {
+        format!("{}.db", database_name)
+    };
+
     let mut string_vector = Vec::new();
     let column_name: &str = &column;
-    let conn = match Connection::open(format!("{}.db", database_name)) {
+    let conn = match Connection::open(&db_path) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
@@ -75,9 +87,15 @@ pub fn load_database_string_database(column: String, database_name: String) -> R
 
 #[tauri::command]
 pub fn load_database_float_database(column: String, database_name: String) -> Result<Vec<f32>, String> {
+    let db_path = if database_name.ends_with(".db") {
+        database_name
+    } else {
+        format!("{}.db", database_name)
+    };
+
     let mut float_vector = Vec::new();
     let column_name: &str = &column;
-    let conn = match Connection::open(format!("{}.db", database_name)) {
+    let conn = match Connection::open(&db_path) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
@@ -109,7 +127,7 @@ pub fn load_database_float_database(column: String, database_name: String) -> Re
 
 pub fn replay_database_data(window: Window, db_path: &str) -> Result<()> {
     let conn = Connection::open(db_path)?;
-    let mut stmt = conn.prepare("SELECT data FROM your_table_name")?;
+    let mut stmt = conn.prepare("SELECT data FROM flightData")?;
     let data_iter = stmt.query_map([], |row| {
         let data: String = row.get(0)?;
         Ok(data)
@@ -129,16 +147,27 @@ pub fn replay_database_data(window: Window, db_path: &str) -> Result<()> {
 }
 
 #[tauri::command]
-pub fn start_replay(window: Window) {
-    let db_path = "path/to/your/database.db";
-    if let Err(e) = replay_database_data(window, db_path) {
+pub fn start_replay(window: Window, database_name: String) {
+    let db_path = if database_name.ends_with(".db") {
+        database_name
+    } else {
+        format!("{}.db", database_name)
+    };
+
+    if let Err(e) = replay_database_data(window, &db_path) {
         eprintln!("Failed to replay database data: {}", e);
     }
 }
 
 #[tauri::command]
 pub fn create_new_database(database_name: String) -> Result<(), String> {
-    let conn = match Connection::open(format!("{}.db", database_name)) {
+    let db_path = if database_name.ends_with(".db") {
+        database_name
+    } else {
+        format!("{}.db", database_name)
+    };
+
+    let conn = match Connection::open(&db_path) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error creating database: {}", err.to_string())),
     };
