@@ -1,4 +1,3 @@
-
 import Map from './components/Map';
 import Graphs from './components/Graphs';
 import Console from './components/Console';
@@ -278,6 +277,60 @@ function App() {
 	  });
    }
  
+function parseDatabaseReplayData(data) {
+  data = data.split("$");
+  data.shift();
+  for (let pack of data) {
+    pack = pack.split("\r\n");
+    pack.pop();
+    pack.shift();
+    pack = pack.map(raw_packet => raw_packet.split(","));
+    if (pack.length !== 0 && pack[0].length !== 0 && pack[1].length !== 0 && pack[2].length !== 0) {
+      console.log('this is pack');
+      console.log(pack);
+      console.log('this is pack[0]');
+      console.log(pack[0]);
+      console.log('this is pack[0][0]');
+      console.log(pack[0][0]);
+
+      // Test for raw data to console 
+      setRawData((prevRawData) => [...prevRawData, pack]);
+      setsnrArray(prevsnr => [...prevsnr, pack[2][0]]);
+      setrssiArray(prevrssi => [...prevrssi, pack[1][0]]);
+      parsePack(
+        pack[0][0], 
+        pack[0][1], 
+        pack[0][2],
+        pack[0][3], 
+        pack[0][4], 
+        pack[0][5], 
+        pack[0][6], 
+        pack[0][7], 
+        pack[0][8], 
+        pack[0][9], 
+        pack[0][10],
+        pack[0][11],
+        pack[0][12],
+        pack[0][13],
+        pack[0][14],
+        pack[0][15],
+        pack[0][16],
+        pack[0][17],
+        pack[0][18]
+      );
+    }
+  }
+}
+
+useEffect(() => {
+  const unlisten = appWindow.listen('plugin-serialport-read-your_path', event => {
+    parseDatabaseReplayData(event.payload);
+  });
+
+  return () => {
+    unlisten.then(fn => fn());
+  };
+}, []);
 
   if (live){
 	return(

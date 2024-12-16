@@ -1,17 +1,31 @@
-const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath,cancelRead}) => {
+import { invoke } from '@tauri-apps/api/tauri';
+
+const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath, cancelRead}) => {
   function setPort (setCOMPort, COMPort) {
-  console.log('old port')
-  console.log(COMPort)
-  setCOMPort(document.getElementById('UserInput').value)
-  console.log(document.getElementById('UserInput').value)
-  console.log('New port')
-  console.log(COMPort)
-  setInformation(COMPort)
+    console.log('old port')
+    console.log(COMPort)
+    setCOMPort(document.getElementById('UserInput').value)
+    console.log(document.getElementById('UserInput').value)
+    console.log('New port')
+    console.log(COMPort)
+    setInformation(COMPort)
   }
+
   function setpath(setfilepath, filepath) {
     setfilepath(document.getElementById('UserPathInput').value)
     setInformation(filepath)
   }
+
+  function replayFromFile() {
+    invoke('start_replay')
+      .then(() => {
+        setInformation('Replaying data from file...');
+      })
+      .catch((err) => {
+        setInformation(`Failed to replay data: ${err}`);
+      });
+  }
+
   return (
     <div className='flex-1'>
       <div className="divider uppercase">controls</div>
@@ -38,7 +52,7 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
         </div>
         <div className='flex gap-2'>
           <div className='flex flex-col gap-2 flex-1'>
-            <button className="btn btn-outline btn-info uppercase">replay from file</button>
+            <button className="btn btn-outline btn-info uppercase" onClick={replayFromFile}>replay from file</button>
             <button className="btn btn-outline btn-warning uppercase">flush memory</button>
           </div>
           <div className='flex flex-col gap-2 flex-1'>
