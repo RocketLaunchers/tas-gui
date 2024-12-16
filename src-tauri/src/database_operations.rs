@@ -134,3 +134,32 @@ pub fn start_replay(window: Window) {
         eprintln!("Failed to replay database data: {}", e);
     }
 }
+
+#[tauri::command]
+pub fn create_new_database(database_name: String) -> Result<(), String> {
+    let conn = match Connection::open(format!("{}.db", database_name)) {
+        Ok(conn) => conn,
+        Err(err) => return Err(format!("Error creating database: {}", err.to_string())),
+    };
+
+    match conn.execute(
+        "CREATE TABLE IF NOT EXISTS flightData (
+            id INTEGER PRIMARY KEY,
+            data TEXT NOT NULL
+        )",
+        [],
+    ) {
+        Ok(_) => Ok(()),
+        Err(err) => Err(format!("Error creating table: {}", err.to_string())),
+    }
+}
+
+#[tauri::command]
+pub fn select_database(database_name: String) -> Result<String, String> {
+    let conn = match Connection::open(format!("{}.db", database_name)) {
+        Ok(_) => Ok(database_name),
+        Err(err) => Err(format!("Error selecting database: {}", err.to_string())),
+    };
+
+    conn
+}

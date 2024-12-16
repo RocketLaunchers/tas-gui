@@ -66,8 +66,24 @@ const Databases = ({setInformation, setliveData}) => {
   const [loadYear, setloadYear] = useState("2022-2023");
   const labels = dbtimesArray;
   const [makedbScreen, setmakedbScreen] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [newDatabaseName, setNewDatabaseName] = useState("");
 
-
+  async function createNewDatabase() {
+    if (newDatabaseName) {
+      try {
+        await invoke('create_new_database', { databaseName: newDatabaseName });
+        setInformation(`Database '${newDatabaseName}' created successfully.`);
+        setShowPrompt(false);
+        setNewDatabaseName("");
+      } catch (error) {
+        setInformation(`Failed to create database: ${error}`);
+      }
+    } else {
+      setInformation("Database creation canceled.");
+      setShowPrompt(false);
+    }
+  }
 
   async function readDataInteger (name, databaseSelected){
       try{ 
@@ -237,7 +253,7 @@ return (
      
       <div className='flex-column'>
            <button className={"btn btn-outline btn-error uppercase"} onClick={()=>{readAllData(loadYear)}}>Load:{`${yearSelect}`}</button>
-           <button className={'btn btn-outline btn-error uppercase'} onClick={()=>setmakedbScreen(true)}> New Database</button>
+           <button className={'btn btn-outline btn-error uppercase'} onClick={() => setShowPrompt(true)}> New Database</button>
            <div>
               <label>
                   Select Database 
@@ -266,6 +282,25 @@ return (
       </div>
    
     </div>
+
+    {showPrompt && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Create New Database</h3>
+            <input
+              type="text"
+              placeholder="Enter database name"
+              className="input input-bordered w-full mt-4"
+              value={newDatabaseName}
+              onChange={(e) => setNewDatabaseName(e.target.value)}
+            />
+            <div className="modal-action">
+              <button className="btn btn-primary" onClick={createNewDatabase}>Create</button>
+              <button className="btn" onClick={() => setShowPrompt(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
   </div>
   
   

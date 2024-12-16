@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { invoke } from '@tauri-apps/api/tauri'
 //import { useEffect } from 'react';
 import { listen } from '@tauri-apps/api/event';
+import { appWindow } from '@tauri-apps/api/window'; // Add this import
 
 function App() {
   const [COMPort, setCOMPort] = useState('COM3');
