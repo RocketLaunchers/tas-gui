@@ -1,7 +1,7 @@
 node_modules
 public
 target/
-
+tauri-plugin-serialport/target/.rustc_info.json
 
 
 
