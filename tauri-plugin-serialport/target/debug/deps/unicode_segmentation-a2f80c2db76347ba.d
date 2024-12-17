@@ -1,9 +1,0 @@
-c:\Users\ramga\Desktop\tas-gui-v1\tauri-plugin-serialport\target\debug\deps\unicode_segmentation-a2f80c2db76347ba.rmeta: C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\lib.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\grapheme.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\sentence.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\word.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\tables.rs
-
-c:\Users\ramga\Desktop\tas-gui-v1\tauri-plugin-serialport\target\debug\deps\unicode_segmentation-a2f80c2db76347ba.d: C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\lib.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\grapheme.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\sentence.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\word.rs C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\tables.rs
-
-C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\lib.rs:
-C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\grapheme.rs:
-C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\sentence.rs:
-C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\word.rs:
-C:\Users\ramga\.cargo\registry\src\github.com-1ecc6299db9ec823\unicode-segmentation-1.10.1\src\tables.rs:
