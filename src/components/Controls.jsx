@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
+import { listen } from '@tauri-apps/api/event';
 
 const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath, cancelRead}) => {
   const [databases, setDatabases] = useState([]);
   const [selectedDatabase, setSelectedDatabase] = useState("");
   const [recordDatabase, setRecordDatabase] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [unlisten, setUnlisten] = useState(null);
 
   useEffect(() => {
     async function fetchDatabases() {
@@ -47,12 +50,38 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
     }
   }
 
-  function recordToFile() {
-    if (recordDatabase) {
-      // Placeholder for the record functionality
-      setInformation(`Recording data to database '${recordDatabase}'...`);
+  async function recordToFile() {
+    if (isRecording) {
+      if (unlisten) {
+        await unlisten();
+        setUnlisten(null);
+      }
+      setIsRecording(false);
+      setInformation("Recording stopped.");
     } else {
-      setInformation("Please select a database to record.");
+      if (recordDatabase) {
+        setIsRecording(true);
+        setInformation(`Recording data to database '${recordDatabase}'...`);
+
+        const unlistenFn = await listen('plugin-serialport-read-your_path', event => {
+          const liveData = JSON.stringify({
+            timestamp: new Date().toISOString(),
+            data: event.payload
+          });
+
+          invoke('write_live_data_to_database', { databaseName: recordDatabase, data: liveData })
+            .then(() => {
+              setInformation(`Data recorded to database '${recordDatabase}' successfully.`);
+            })
+            .catch((err) => {
+              setInformation(`Failed to record data: ${err}`);
+            });
+        });
+
+        setUnlisten(() => unlistenFn);
+      } else {
+        setInformation("Please select a database to record.");
+      }
     }
   }
 
@@ -101,7 +130,7 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
                   <option key={db} value={db}>{db}</option>
                 ))}
               </select>
-              <button className="btn btn-outline btn-error uppercase w-1/2" onClick={recordToFile}>record</button>
+              <button className="btn btn-outline btn-error uppercase w-1/2" onClick={recordToFile}>{isRecording ? "STOP" : "record"}</button>
             </div>
           </div>
         </div>
