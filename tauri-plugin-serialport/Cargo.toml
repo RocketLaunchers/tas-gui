@@ -12,3 +12,5 @@ tauri = { version = "1.0.2" }
 serde = "1.0"
 thiserror = "1.0"
 serialport = {version = "4.2.0"}
+tokio = { version = "1", features = ["full"] }
+tungstenite = { version = "0.15" }
