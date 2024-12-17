@@ -13,4 +13,5 @@ serde = "1.0"
 thiserror = "1.0"
 serialport = {version = "4.2.0"}
 tokio = { version = "1", features = ["full"] }
-tungstenite = { version = "0.15" }
+tokio-tungstenite = "0.17"
+futures-util = "0.3"
