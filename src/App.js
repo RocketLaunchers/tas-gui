@@ -324,7 +324,7 @@ function parseDatabaseReplayData(data) {
 }
 
 useEffect(() => {
-  const unlisten = appWindow.listen('plugin-serialport-read-your_path', event => {
+  const unlisten = appWindow.listen('plugin-serialport-read-your_path', async event => {
     parseDatabaseReplayData(event.payload);
   });
 

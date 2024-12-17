@@ -7,6 +7,7 @@ use std::sync::mpsc::{Receiver, Sender, TryRecvError};
 use std::thread;
 use std::time::Duration;
 use tauri::{command, AppHandle, Runtime, State, Window};
+use tokio::runtime::Runtime as TokioRuntime;
 
 /// Get serial port from state using path and apply function `f`
 fn get_serialport<T, F: FnOnce(&mut SerialportInfo) -> Result<T, Error>>(
@@ -247,9 +248,18 @@ pub fn read<R: Runtime>(
                     serial.write_data_terminal_ready(true).unwrap();
                     let mut serial_buf = vec![0; size.unwrap_or(1024)];
                     if let Ok(size) = serial.read(serial_buf.as_mut_slice()) {
+                        let data = String::from_utf8_lossy(&serial_buf[..size]).to_string();
                         if window.emit(&read_event, ReadData { data: &serial_buf[..size], size }).is_err() {
                             // Log failed emit
                         }
+                        // Send data through WebSocket asynchronously
+                        let window_clone = window.clone();
+                        let rt = TokioRuntime::new().unwrap();
+                        rt.spawn(async move {
+                            if let Err(e) = window_clone.emit("plugin-serialport-read-your_path", data) {
+                                eprintln!("Failed to send data through WebSocket: {}", e);
+                            }
+                        });
                     }
                     thread::sleep(Duration::from_millis(timeout.unwrap_or(200)));
                 });
