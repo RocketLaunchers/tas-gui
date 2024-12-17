@@ -7,7 +7,7 @@ use std::sync::mpsc::{Receiver, Sender, TryRecvError};
 use std::thread;
 use std::time::Duration;
 use tauri::{command, AppHandle, Runtime, State, Window};
-use tokio::runtime::Runtime as TokioRuntime;
+use tauri::async_runtime::spawn;
 
 /// Get serial port from state using path and apply function `f`
 fn get_serialport<T, F: FnOnce(&mut SerialportInfo) -> Result<T, Error>>(
@@ -221,6 +221,22 @@ pub fn open<R: Runtime>(
     }
 }
 
+/// Process live data and send it to frontend and backend
+async fn process_live_data<R: Runtime>(window: Window<R>, path: String, data: Vec<u8>) {
+    let read_event = format!("plugin-serialport-read-{}", &path);
+    let data_str = String::from_utf8_lossy(&data).to_string();
+
+    // Send data to frontend
+    if window.emit(&read_event, ReadData { data: &data, size: data.len() }).is_err() {
+        eprintln!("Failed to emit data to frontend");
+    }
+
+    // Send data to backend
+    if let Err(e) = window.emit("plugin-serialport-read-your_path", data_str.clone()) {
+        eprintln!("Failed to send data to backend: {}", e);
+    }
+}
+
 /// Read data from a serial port
 #[command]
 pub fn read<R: Runtime>(
@@ -237,7 +253,6 @@ pub fn read<R: Runtime>(
         }
         match serialport_info.serialport.try_clone() {
             Ok(mut serial) => {
-                let read_event = format!("plugin-serialport-read-{}", &path);
                 let (tx, rx): (Sender<usize>, Receiver<usize>) = mpsc::channel();
                 serialport_info.sender = Some(tx);
                 thread::spawn(move || loop {
@@ -248,17 +263,11 @@ pub fn read<R: Runtime>(
                     serial.write_data_terminal_ready(true).unwrap();
                     let mut serial_buf = vec![0; size.unwrap_or(1024)];
                     if let Ok(size) = serial.read(serial_buf.as_mut_slice()) {
-                        let data = String::from_utf8_lossy(&serial_buf[..size]).to_string();
-                        if window.emit(&read_event, ReadData { data: &serial_buf[..size], size }).is_err() {
-                            // Log failed emit
-                        }
-                        // Send data through WebSocket asynchronously
                         let window_clone = window.clone();
-                        let rt = TokioRuntime::new().unwrap();
-                        rt.spawn(async move {
-                            if let Err(e) = window_clone.emit("plugin-serialport-read-your_path", data) {
-                                eprintln!("Failed to send data through WebSocket: {}", e);
-                            }
+                        let path_clone = path.clone();
+                        let data_clone = serial_buf[..size].to_vec();
+                        spawn(async move {
+                            process_live_data(window_clone, path_clone, data_clone).await;
                         });
                     }
                     thread::sleep(Duration::from_millis(timeout.unwrap_or(200)));
