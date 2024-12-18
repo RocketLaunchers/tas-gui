@@ -202,38 +202,3 @@ pub fn list_databases() -> Result<Vec<String>, String> {
     }
     Ok(databases)
 }
-
-#[tauri::command]
-pub fn write_live_data_to_database(database_name: String, data: String) -> Result<(), String> {
-    let db_path = if database_name.ends_with(".db") {
-        database_name
-    } else {
-        format!("{}.db", database_name)
-    };
-
-    println!("Opening database at path: {}", db_path);
-
-    let conn = match Connection::open(&db_path) {
-        Ok(conn) => conn,
-        Err(err) => {
-            println!("Error opening connection: {}", err.to_string());
-            return Err(format!("Error opening connection: {}", err.to_string()));
-        }
-    };
-
-    println!("Inserting data into database: {}", data);
-
-    match conn.execute(
-        "INSERT INTO flightData (data) VALUES (?1)",
-        &[&data],
-    ) {
-        Ok(_) => {
-            println!("Data inserted successfully");
-            Ok(())
-        },
-        Err(err) => {
-            println!("Error inserting data: {}", err.to_string());
-            Err(format!("Error inserting data: {}", err.to_string()))
-        }
-    }
-}

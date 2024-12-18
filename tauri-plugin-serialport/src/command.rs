@@ -1,5 +1,6 @@
 use crate::error::Error;
-use crate::state::{ReadData, SerialportInfo, SerialportState};
+use crate::state::{SerialportInfo, SerialportState};
+use crate::live_data_operations::process_live_data; // Add this line
 // use std::collections::HashMap;
 use serialport::{DataBits, FlowControl, Parity, StopBits};
 use std::sync::mpsc;
@@ -221,22 +222,6 @@ pub fn open<R: Runtime>(
     }
 }
 
-/// Process live data and send it to frontend and backend
-async fn process_live_data<R: Runtime>(window: Window<R>, path: String, data: Vec<u8>) {
-    let read_event = format!("plugin-serialport-read-{}", &path);
-    let data_str = String::from_utf8_lossy(&data).to_string();
-
-    // Send data to frontend
-    if window.emit(&read_event, ReadData { data: &data, size: data.len() }).is_err() {
-        eprintln!("Failed to emit data to frontend");
-    }
-
-    // Send data to backend
-    if let Err(e) = window.emit("plugin-serialport-read-your_path", data_str.clone()) {
-        eprintln!("Failed to send data to backend: {}", e);
-    }
-}
-
 /// Read data from a serial port
 #[command]
 pub fn read<R: Runtime>(
@@ -246,6 +231,7 @@ pub fn read<R: Runtime>(
     path: String,
     timeout: Option<u64>,
     size: Option<usize>,
+    database_name: Option<String>, // Add this parameter
 ) -> Result<(), Error> {
     get_serialport(state.clone(), path.clone(), |serialport_info| {
         if serialport_info.sender.is_some() {
@@ -266,8 +252,9 @@ pub fn read<R: Runtime>(
                         let window_clone = window.clone();
                         let path_clone = path.clone();
                         let data_clone = serial_buf[..size].to_vec();
+                        let db_name_clone = database_name.clone(); // Clone the database name
                         spawn(async move {
-                            process_live_data(window_clone, path_clone, data_clone).await;
+                            process_live_data(window_clone, path_clone, data_clone, db_name_clone).await;
                         });
                     }
                     thread::sleep(Duration::from_millis(timeout.unwrap_or(200)));

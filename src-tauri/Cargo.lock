@@ -2731,7 +2731,9 @@ dependencies = [
 name = "tauri-plugin-serialport"
 version = "0.0.4"
 dependencies = [
+ "chrono",
  "futures-util",
+ "rusqlite",
  "serde",
  "serialport",
  "tauri",

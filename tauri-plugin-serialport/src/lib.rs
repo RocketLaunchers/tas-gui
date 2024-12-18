@@ -12,6 +12,8 @@ use std::{
 mod command;
 mod error;
 mod state;
+pub mod live_data_operations; // Make this line public
+pub use live_data_operations::write_live_data_to_database;
 
 /// Initializes the plugin.
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
@@ -26,10 +28,12 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             read,
             write,
             write_binary,
+            write_live_data_to_database, // Include the function here
         ])
         .setup(move |app_handle| {
             app_handle.manage(SerialportState {
                 serialports: Arc::new(Mutex::new(HashMap::new())),
+
             });
             Ok(())
         })
