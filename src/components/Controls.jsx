@@ -69,12 +69,15 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
             data: event.payload
           });
 
-          invoke('write_live_data_to_database', { databaseName: recordDatabase, data: liveData })
+          console.log('Invoking write_live_data_to_database with:', { databaseName: recordDatabase, data: liveData }); // Add this line for debugging
+
+          invoke('plugin:serialport|write_live_data_to_database', { databaseName: recordDatabase, data: liveData }) // Ensure the correct plugin prefix
             .then(() => {
               setInformation(`Data recorded to database '${recordDatabase}' successfully.`);
             })
             .catch((err) => {
               setInformation(`Failed to record data: ${err}`);
+              console.error('Error invoking write_live_data_to_database:', err); // Add this line for debugging
             });
         });
 

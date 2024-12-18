@@ -6,6 +6,8 @@ use tauri::{Runtime, Window};
 
 #[tauri::command]
 pub fn write_live_data_to_database(database_name: String, data: String) -> Result<(), String> {
+    println!("write_live_data_to_database called with database_name: {}, data: {}", database_name, data); // Add this line for debugging
+
     let db_path = if database_name.ends_with(".db") {
         database_name
     } else {

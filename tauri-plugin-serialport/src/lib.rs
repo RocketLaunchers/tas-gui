@@ -33,7 +33,6 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
         .setup(move |app_handle| {
             app_handle.manage(SerialportState {
                 serialports: Arc::new(Mutex::new(HashMap::new())),
-
             });
             Ok(())
         })
