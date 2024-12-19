@@ -34,7 +34,9 @@ Open terminal in project root directory and run
 ```bash
 npm run tauri dev
 ```
+## Windows App
 
+Open Terminal and run cargo tauri build --target x86_64-pc-windows-gnu
 
 ## 🛠 Skills
 React.js, Rust, Tailwind
