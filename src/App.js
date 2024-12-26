@@ -281,34 +281,34 @@ function App() {
 
   if (live){
 	return(
-	<div className='h-screen w-screen flex flex-col'>
+	<div className='h-screen-minus-32 w-screen flex flex-col'>
 
 	  <div className='flex w-full flex-1 p-2'>
 
-		<div className='flex-1 flex flex-col'>
+		  <div className='flex-1 flex flex-col'>
 
-		  <Map
-			 longitudesArray={longitudesArray}
-			 latitudesArray={latitudesArray}
-		  ></Map>
+		    <Map
+		  	 longitudesArray={longitudesArray}
+		  	 latitudesArray={latitudesArray}
+		    ></Map>
 
 
-		  <Console
-		  information={information}
-		   Accel_ZArray={Accel_ZArray}   
-		   Accel_xArray={Accel_xArray}   
-		   Accel_yArray={Accel_yArray}      
-		   gxArray={gxArray}
-		   gyArray={gyArray}
-		   gzArray={gzArray}
-		   rawData={rawData}
-		   altitudes_gpsArray={altitudes_gpsArray}
-		   apogee={apogee}
-		></Console> 
+		    <Console
+		    information={information}
+		     Accel_ZArray={Accel_ZArray}   
+		     Accel_xArray={Accel_xArray}   
+		     Accel_yArray={Accel_yArray}      
+		     gxArray={gxArray}
+		     gyArray={gyArray}
+		     gzArray={gzArray}
+		     rawData={rawData}
+		     altitudes_gpsArray={altitudes_gpsArray}
+		     apogee={apogee}
+		  ></Console> 
 
-		  
+		    
   
-		</div>
+		  </div>
 
 		<div className="divider divider-horizontal"></div>
 
@@ -323,41 +323,41 @@ function App() {
 
 		  <div className='flex flex-1'>
 
-			<Controls 
-			connectionState={connectionState} 
-			openSerialport={openSerialport} 
-			setCOMPort={setCOMPort} 
-			COMPort={COMPort}
-			setInformation={setInformation}
-			setfilepath={setfilepath}
-			filepath={filepath}
-                        cancelRead={cancelRead}
-			></Controls>
-
-			<div className="divider divider-horizontal mt-[16px]"></div>
-
-			<Telemetry
-			  altitudes_array={AltitudesArray}
-			  satellites={satellitesArray}
-			  rssi={rssiArray}
-			  snr={snrArray}
-			  pressure={PressuresArray}
-		  Accel_ZArray={Accel_ZArray}
-		  longitudesArray={longitudesArray}
-			  latitudesArray={latitudesArray}
-			  altitudes_gpsArray={altitudes_gpsArray}
-                          gxArray={gxArray}
-                          gyArray={gyArray}
-                          gzArray={gzArray}
-                          Accel_xArray={Accel_xArray}
-                          Accel_yArray={Accel_yArray}
-						  setApogee={setApogee}
-						  
-			></Telemetry>
-
-					
-
-			 </div>
+  			<Controls 
+  			connectionState={connectionState} 
+  			openSerialport={openSerialport} 
+  			setCOMPort={setCOMPort} 
+  			COMPort={COMPort}
+  			setInformation={setInformation}
+  			setfilepath={setfilepath}
+  			filepath={filepath}
+                          cancelRead={cancelRead}
+  			></Controls>
+  
+  			<div className="divider divider-horizontal mt-[16px]"></div>
+  
+  			<Telemetry
+  			  altitudes_array={AltitudesArray}
+  			  satellites={satellitesArray}
+  			  rssi={rssiArray}
+  			  snr={snrArray}
+  			  pressure={PressuresArray}
+  		    Accel_ZArray={Accel_ZArray}
+  		    longitudesArray={longitudesArray}
+  			  latitudesArray={latitudesArray}
+  			  altitudes_gpsArray={altitudes_gpsArray}
+                            gxArray={gxArray}
+                            gyArray={gyArray}
+                            gzArray={gzArray}
+                            Accel_xArray={Accel_xArray}
+                            Accel_yArray={Accel_yArray}
+  						  setApogee={setApogee}
+  						  
+  			></Telemetry>
+  
+  					
+  
+			</div>
 
 		</div>
 
@@ -382,11 +382,14 @@ function App() {
   );
 } else { 
   return(
-	<Database
-	setInformation={setInformation} 
-	setliveData={setliveData} 
-   >   
-	</Database>
+    <div className='h-screen-minus-32 w-screen flex flex-col'>
+
+    	<Database
+    	setInformation={setInformation} 
+    	setliveData={setliveData} 
+       >   
+    	</Database>
+    </div>
   ); 
 }
 }
